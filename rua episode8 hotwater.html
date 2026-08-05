@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8화 · 新家没有热水</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+SC:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --coral:#F0765A;
+    --coral-dark:#d85f45;
+    --navy:#1c2f4d;
+    --navy-deep:#12203a;
+    --mint:#bfe9df;
+    --mint-soft:#eef8f5;
+    --teal:#2f7d73;
+    --cream:#fff8f0;
+    --text:#2b2b2b;
+    --muted:#7a7a7a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Noto Sans KR',sans-serif;
+    background:linear-gradient(180deg,var(--navy-deep) 0%,var(--navy) 40%,var(--mint-soft) 40%,var(--cream) 100%);
+    color:var(--text);
+    padding-bottom:40px;
+  }
+
+  /* ---------- sky-deco (이사 첫날 저녁 욕실 창문) ---------- */
+  .sky-deco{
+    position:relative;
+    height:150px;
+    overflow:hidden;
+    background:radial-gradient(ellipse at 30% 20%, #24406a 0%, var(--navy) 60%, var(--navy-deep) 100%);
+  }
+  .star{ position:absolute; width:3px; height:3px; background:#fff; border-radius:50%; opacity:.85; animation:twinkle 2.6s ease-in-out infinite; }
+  @keyframes twinkle{0%,100%{opacity:.3;}50%{opacity:1;}}
+  .moon{
+    position:absolute; top:22px; right:14%; width:46px; height:46px; border-radius:50%;
+    background:#fff5d6; box-shadow:0 0 26px 6px rgba(255,245,214,.5);
+  }
+  .window{
+    position:absolute; left:50%; transform:translateX(-50%); bottom:0; width:110px; height:96px;
+    background:rgba(255,255,255,.08); border:3px solid rgba(255,255,255,.35); border-radius:10px 10px 0 0;
+    display:flex;
+  }
+  .window::before, .window::after{content:'';position:absolute;background:rgba(255,255,255,.3);}
+  .window::before{ top:0; bottom:0; left:50%; width:2px; }
+  .window::after{ left:0; right:0; top:50%; height:2px; }
+  .steam{
+    position:absolute; bottom:8px; width:8px; height:8px; border-radius:50%;
+    background:rgba(255,255,255,.55); filter:blur(2px);
+    animation:rise 3.2s ease-in infinite;
+  }
+  @keyframes rise{
+    0%{ transform:translateY(0) scale(.6); opacity:0; }
+    20%{ opacity:.7; }
+    100%{ transform:translateY(-70px) scale(1.3); opacity:0; }
+  }
+
+  header{ text-align:center; padding:22px 16px 18px; }
+  .ep-tag{
+    display:inline-block; background:var(--coral); color:#fff; font-weight:600; font-size:.8rem;
+    padding:4px 14px; border-radius:999px; margin-bottom:10px; letter-spacing:.5px;
+  }
+  h1{ font-family:'Fredoka',sans-serif; font-size:2rem; margin:4px 0; color:var(--navy); }
+  .subtitle{ color:var(--muted); font-size:.92rem; margin-bottom:14px; }
+  #listenAllBtn{
+    background:var(--coral); color:#fff; border:none; padding:10px 22px; border-radius:999px;
+    font-family:'Fredoka',sans-serif; font-size:1rem; font-weight:600; cursor:pointer;
+    box-shadow:0 4px 10px rgba(240,118,90,.35); transition:transform .15s;
+  }
+  #listenAllBtn:active{ transform:scale(.96); }
+  .voice-note{ margin-top:10px; font-size:.78rem; color:var(--muted); }
+  .voice-picker{
+    margin-top:12px; display:flex; align-items:center; justify-content:center; gap:8px;
+    font-size:.82rem; color:var(--navy);
+  }
+  .voice-picker select{
+    font-family:'Noto Sans KR',sans-serif; font-size:.82rem; padding:5px 8px; border-radius:8px;
+    border:1.5px solid var(--coral); background:#fff; color:var(--navy); max-width:180px;
+  }
+
+  .stage{ max-width:640px; margin:0 auto; padding:10px 16px; }
+
+  .narration{
+    text-align:center; font-size:.88rem; color:var(--teal); background:var(--mint-soft);
+    border:1px dashed var(--mint); border-radius:12px; padding:10px 16px; margin:18px 0;
+    font-style:italic;
+  }
+
+  .panel{ display:flex; gap:12px; align-items:flex-end; margin:16px 0; }
+  .panel.right{ flex-direction:row-reverse; }
+
+  .avatar-col{ display:flex; flex-direction:column; align-items:center; width:66px; flex-shrink:0; }
+  .avatar{
+    width:64px; height:64px; border-radius:50%; background:#fff; box-shadow:0 3px 8px rgba(0,0,0,.15);
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+  }
+  .name-tag{ font-size:.72rem; margin-top:4px; color:var(--navy); font-weight:700; }
+
+  .bubble{
+    background:#fff; border-radius:18px; padding:12px 16px; box-shadow:0 3px 10px rgba(0,0,0,.08);
+    max-width:calc(100% - 90px); position:relative;
+  }
+  .panel.right .bubble{ background:var(--mint); }
+
+  .cn-line{ display:flex; align-items:center; gap:8px; }
+  .speak-btn{
+    background:var(--coral); border:none; color:#fff; width:30px; height:30px; border-radius:50%;
+    font-size:.9rem; cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+  }
+  .cn{
+    font-family:'Noto Sans SC',sans-serif; font-weight:700; font-size:1.15rem; margin:0; cursor:pointer;
+    color:var(--navy);
+  }
+  .pinyin{ margin:5px 0 2px 38px; color:var(--teal); font-size:.85rem; font-style:italic; }
+  .kr{ margin:2px 0 0 38px; color:var(--text); font-size:.88rem; }
+
+  .scene-row{ display:flex; align-items:center; justify-content:center; gap:10px; margin:14px 0; }
+  .scene-icon{ font-size:1.3rem; }
+  .sfx-btn{
+    background:#fff; border:2px solid var(--coral); color:var(--coral-dark); border-radius:999px;
+    padding:7px 16px; font-size:.85rem; font-weight:600; cursor:pointer; transition:.15s;
+  }
+  .sfx-btn:active{ background:var(--coral); color:#fff; transform:scale(.97); }
+
+  footer{ max-width:640px; margin:26px auto 0; padding:0 16px; }
+  footer h2{ font-family:'Fredoka',sans-serif; color:var(--navy); font-size:1.2rem; border-bottom:3px solid var(--coral); display:inline-block; padding-bottom:2px; }
+  .vocab-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin:14px 0 8px;
+  }
+  .vocab-item{
+    background:#fff; border-radius:12px; padding:10px 12px; box-shadow:0 2px 6px rgba(0,0,0,.07);
+    cursor:pointer; border:2px solid transparent;
+  }
+  .vocab-item:active{ border-color:var(--coral); }
+  .vocab-item .v-cn{ font-family:'Noto Sans SC',sans-serif; font-weight:700; font-size:1.05rem; color:var(--navy); }
+  .vocab-item .v-py{ font-size:.78rem; color:var(--teal); font-style:italic; }
+  .vocab-item .v-kr{ font-size:.82rem; color:var(--text); margin-top:2px; }
+  .vocab-item.review{ background:var(--mint-soft); border:1.5px dashed var(--mint); }
+
+  .repeat-note, .review-note{ font-size:.82rem; color:var(--muted); margin:10px 0 4px; }
+  .repeat-note b, .review-note b{ color:var(--coral-dark); }
+</style>
+</head>
+<body>
+
+<div class="sky-deco">
+  <div class="moon"></div>
+  <div class="star" style="top:20px;left:20%;"></div>
+  <div class="star" style="top:40px;left:70%;animation-delay:.6s;"></div>
+  <div class="star" style="top:60px;left:35%;animation-delay:1.2s;"></div>
+  <div class="star" style="top:30px;left:55%;animation-delay:1.8s;"></div>
+  <div class="window">
+    <div class="steam" style="left:28px;animation-delay:0s;"></div>
+    <div class="steam" style="left:50px;animation-delay:1s;"></div>
+    <div class="steam" style="left:72px;animation-delay:2s;"></div>
+  </div>
+</div>
+
+<header>
+  <span class="ep-tag">8화 · 新家没有热水</span>
+  <h1>新家没有热水</h1>
+  <div class="subtitle">이사 온 첫날, 뜨거운 물이 안 나와요 · 기쁨이와 루아의 대화</div>
+  <button id="listenAllBtn">▶ 전체 대화 듣기</button>
+  <div class="voice-note">🔊 버튼이나 중국어 문장을 누르면 발음을 들을 수 있어요</div>
+  <div class="voice-picker">
+    <label for="voiceSelect">🎙 음성 선택</label>
+    <select id="voiceSelect"><option>목소리 불러오는 중…</option></select>
+  </div>
+</header>
+
+<div class="stage">
+
+  <div class="narration">搬家的第一天晚上，家里还有点乱。<br>(이사 온 첫날 저녁, 집 안은 아직 정리가 덜 되어 있었어요.)</div>
+
+  <div class="panel right">
+    <div class="avatar-col">
+      <div class="avatar" data-char="rua" data-emotion="excited"></div>
+      <div class="name-tag">루아</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">洗澡时间到了！我要洗澡！</p></div>
+      <p class="pinyin">Xǐzǎo shíjiān dào le! Wǒ yào xǐzǎo!</p>
+      <p class="kr">목욕 시간이다! 나 목욕할래!</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="avatar-col">
+      <div class="avatar" data-char="gi" data-emotion="normal"></div>
+      <div class="name-tag">기쁨이</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">好，你先等一下，我去看看热水器。</p></div>
+      <p class="pinyin">Hǎo, nǐ xiān děng yíxià, wǒ qù kànkan rèshuǐqì.</p>
+      <p class="kr">좋아, 잠깐 기다려, 온수기부터 확인해볼게.</p>
+    </div>
+  </div>
+
+  <div class="scene-row">
+    <span class="scene-icon">🚿</span>
+    <button class="sfx-btn" id="sfxWaterBtn">🔉 물 흐르는 소리</button>
+  </div>
+
+  <div class="panel">
+    <div class="avatar-col">
+      <div class="avatar" data-char="gi" data-emotion="surprised"></div>
+      <div class="name-tag">기쁨이</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">咦？只有冷水，没有热水！</p></div>
+      <p class="pinyin">Yí? Zhǐyǒu lěngshuǐ, méiyǒu rèshuǐ!</p>
+      <p class="kr">어? 찬물만 나오고, 온수가 없어!</p>
+    </div>
+  </div>
+
+  <div class="panel right">
+    <div class="avatar-col">
+      <div class="avatar" data-char="rua" data-emotion="worried"></div>
+      <div class="name-tag">루아</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">为什么突然是冷水？我有点儿害怕…</p></div>
+      <p class="pinyin">Wèishénme tūrán shì lěngshuǐ? Wǒ yǒudiǎnr hàipà…</p>
+      <p class="kr">왜 갑자기 찬물이 나와? 나 좀 무서워…</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="avatar-col">
+      <div class="avatar" data-char="gi" data-emotion="warm"></div>
+      <div class="name-tag">기쁨이</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">别害怕，可能是热水器坏了，因为我们刚搬家。</p></div>
+      <p class="pinyin">Bié hàipà, kěnéng shì rèshuǐqì huài le, yīnwèi wǒmen gāng bānjiā.</p>
+      <p class="kr">무서워하지 마, 아마 온수기가 고장났나봐, 우리가 막 이사했으니까.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="avatar-col">
+      <div class="avatar" data-char="gi" data-emotion="normal"></div>
+      <div class="name-tag">기쁨이</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">我打电话问问，你先等一会儿，好吗？</p></div>
+      <p class="pinyin">Wǒ dǎ diànhuà wènwen, nǐ xiān děng yíhuìr, hǎo ma?</p>
+      <p class="kr">내가 전화해서 물어볼게, 잠깐만 기다려줄래?</p>
+    </div>
+  </div>
+
+  <div class="scene-row">
+    <span class="scene-icon">📞</span>
+    <button class="sfx-btn" id="sfxPhoneBtn">🔉 전화벨 소리</button>
+  </div>
+
+  <div class="panel right">
+    <div class="avatar-col">
+      <div class="avatar" data-char="rua" data-emotion="trusting"></div>
+      <div class="name-tag">루아</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">好，我相信你，我等你。</p></div>
+      <p class="pinyin">Hǎo, wǒ xiāngxìn nǐ, wǒ děng nǐ.</p>
+      <p class="kr">응, 너를 믿어, 기다릴게.</p>
+    </div>
+  </div>
+
+  <div class="scene-row">
+    <span class="scene-icon">🚪</span>
+    <button class="sfx-btn" id="sfxKnockBtn">🔉 똑똑 노크 소리</button>
+  </div>
+
+  <div class="narration">修理师傅很快就到了。<br>(수리 기사님이 금방 도착했어요.)</div>
+
+  <div class="panel">
+    <div class="avatar-col">
+      <div class="avatar" data-char="gi" data-emotion="happy"></div>
+      <div class="name-tag">기쁨이</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">太好了，修理师傅马上来修！</p></div>
+      <p class="pinyin">Tài hǎo le, xiūlǐ shīfu mǎshàng lái xiū!</p>
+      <p class="kr">잘됐다, 수리 기사님이 곧 오셔서 고쳐주신대!</p>
+    </div>
+  </div>
+
+  <div class="panel right">
+    <div class="avatar-col">
+      <div class="avatar" data-char="rua" data-emotion="joyful"></div>
+      <div class="name-tag">루아</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">终于要洗澡了！我好开心！</p></div>
+      <p class="pinyin">Zhōngyú yào xǐzǎo le! Wǒ hǎo kāixīn!</p>
+      <p class="kr">드디어 목욕할 수 있어! 나 진짜 좋아!</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="avatar-col">
+      <div class="avatar" data-char="gi" data-emotion="warm"></div>
+      <div class="name-tag">기쁨이</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">对，搬新家有时候会遇到麻烦，但是没关系，我们一起解决。</p></div>
+      <p class="pinyin">Duì, bān xīn jiā yǒushíhou huì yùdào máfan, dànshì méi guānxi, wǒmen yìqǐ jiějué.</p>
+      <p class="kr">맞아, 새 집으로 이사하면 가끔 골치 아픈 일이 생기기도 하지만, 괜찮아, 우리 같이 해결하면 돼.</p>
+    </div>
+  </div>
+
+  <div class="narration">热水器终于修好了，麻烦解决了，晚上洗了一个暖暖的澡。<br>(온수기가 마침내 고쳐졌고, 문제가 해결되어서, 밤에 따뜻하게 목욕했어요.)</div>
+
+</div>
+
+<footer>
+  <h2>오늘의 단어 (새 단어)</h2>
+  <div class="vocab-grid" id="newVocab"></div>
+  <div class="repeat-note">💡 <b>热水器</b>(3회) · <b>搬家</b>(3회) · <b>冷水</b>(2회) · <b>修理/师傅</b>(2회) · <b>终于</b>·<b>麻烦</b>(2회) — 이 단어들은 대화 속에서 여러 번 등장해요. 나머지 단어는 이번 편에 1번 등장하지만, 상황과 함께 기억하면 오래 남아요.</div>
+
+  <div class="review-note">🔁 이전 회차 복습 단어 (6·7화에서 배운 단어)</div>
+  <div class="vocab-grid" id="reviewVocab"></div>
+</footer>
+
+<script>
+  /* ---------------- 아바타 SVG ---------------- */
+  function girlFace(emotion){
+    const eyes = {
+      normal:  '<circle cx="24" cy="30" r="4" fill="#2b2b2b"/><circle cx="40" cy="30" r="4" fill="#2b2b2b"/>',
+      surprised:'<circle cx="24" cy="29" r="5.5" fill="#2b2b2b"/><circle cx="40" cy="29" r="5.5" fill="#2b2b2b"/>',
+      warm:    '<path d="M20 30 Q24 26 28 30" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M36 30 Q40 26 44 30" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+      happy:   '<path d="M20 29 Q24 25 28 29" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M36 29 Q40 25 44 29" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/>'
+    };
+    const mouth = {
+      normal:  '<path d="M26 40 Q32 44 38 40" stroke="#c9584a" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+      surprised:'<ellipse cx="32" cy="41" rx="4" ry="5" fill="#c9584a"/>',
+      warm:    '<path d="M25 39 Q32 46 39 39" stroke="#c9584a" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+      happy:   '<path d="M24 38 Q32 47 40 38" stroke="#c9584a" stroke-width="2.8" fill="none" stroke-linecap="round"/>'
+    };
+    return `
+    <svg viewBox="0 0 64 64" width="60" height="60">
+      <circle cx="32" cy="34" r="22" fill="#ffe3c4"/>
+      <path d="M10 30 Q10 8 32 8 Q54 8 54 30 Q54 18 32 16 Q10 18 10 30 Z" fill="#6b4a35"/>
+      <path d="M10 28 Q8 42 14 46 Q12 34 16 26 Z" fill="#6b4a35"/>
+      <path d="M54 28 Q56 42 50 46 Q52 34 48 26 Z" fill="#6b4a35"/>
+      <circle cx="18" cy="38" r="3.2" fill="#f6a9a0" opacity=".7"/>
+      <circle cx="46" cy="38" r="3.2" fill="#f6a9a0" opacity=".7"/>
+      ${eyes[emotion]||eyes.normal}
+      ${mouth[emotion]||mouth.normal}
+    </svg>`;
+  }
+
+  function dogFace(emotion){
+    const eyes = {
+      excited: '<circle cx="23" cy="29" r="4.5" fill="#2b2b2b"/><circle cx="41" cy="29" r="4.5" fill="#2b2b2b"/>',
+      worried: '<path d="M18 27 Q23 24 27 28" stroke="#2b2b2b" stroke-width="2.3" fill="none" stroke-linecap="round"/><path d="M37 28 Q41 24 46 27" stroke="#2b2b2b" stroke-width="2.3" fill="none" stroke-linecap="round"/><circle cx="23" cy="31" r="3" fill="#2b2b2b"/><circle cx="41" cy="31" r="3" fill="#2b2b2b"/>',
+      trusting:'<path d="M19 29 Q23 26 27 29" stroke="#2b2b2b" stroke-width="2.3" fill="none" stroke-linecap="round"/><path d="M37 29 Q41 26 45 29" stroke="#2b2b2b" stroke-width="2.3" fill="none" stroke-linecap="round"/>',
+      joyful:  '<path d="M18 30 Q23 24 28 30" stroke="#2b2b2b" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M36 30 Q41 24 46 30" stroke="#2b2b2b" stroke-width="2.6" fill="none" stroke-linecap="round"/>'
+    };
+    const mouth = {
+      excited: '<path d="M24 39 Q32 45 40 39" stroke="#8a5a3a" stroke-width="2.4" fill="none" stroke-linecap="round"/><ellipse cx="32" cy="43" rx="4.5" ry="6" fill="#f28fa0"/>',
+      worried: '<path d="M27 41 Q32 38 37 41" stroke="#8a5a3a" stroke-width="2.4" fill="none" stroke-linecap="round"/>',
+      trusting:'<path d="M25 39 Q32 43 39 39" stroke="#8a5a3a" stroke-width="2.4" fill="none" stroke-linecap="round"/>',
+      joyful:  '<path d="M22 38 Q32 47 42 38" stroke="#8a5a3a" stroke-width="2.6" fill="none" stroke-linecap="round"/><ellipse cx="32" cy="42" rx="5" ry="7" fill="#f28fa0"/>'
+    };
+    return `
+    <svg viewBox="0 0 64 64" width="60" height="60">
+      <ellipse cx="14" cy="24" rx="8" ry="12" fill="#a67553" transform="rotate(-20 14 24)"/>
+      <ellipse cx="50" cy="24" rx="8" ry="12" fill="#a67553" transform="rotate(20 50 24)"/>
+      <circle cx="32" cy="34" r="21" fill="#c99568"/>
+      <ellipse cx="32" cy="42" rx="13" ry="10" fill="#f2e0c8"/>
+      ${eyes[emotion]||eyes.excited}
+      <ellipse cx="32" cy="35" rx="3.4" ry="2.6" fill="#3a2b20"/>
+      ${mouth[emotion]||mouth.excited}
+    </svg>`;
+  }
+
+  document.querySelectorAll('.avatar').forEach(el=>{
+    const char = el.dataset.char, emo = el.dataset.emotion;
+    el.innerHTML = char==='gi' ? girlFace(emo) : dogFace(emo);
+  });
+
+  /* ---------------- TTS (자연스러운 발화 개선) ---------------- */
+  let zhVoices = [];
+  let chosenVoice = null;
+  const voiceSelect = document.getElementById('voiceSelect');
+
+  function pickBestVoice(pool){
+    // 자연스럽게 들리는 것으로 알려진 이름 우선 (기기별로 다를 수 있음)
+    const preferred = /Tingting|Ting-Ting|Mei-?Jia|Sinji|Sin-?ji|Google 普通话|普通话|Yaoyao|Xiaoxiao|Enhanced|Premium/i;
+    return pool.find(v => preferred.test(v.name)) || pool[0];
+  }
+
+  function loadVoices(){
+    const all = speechSynthesis.getVoices();
+    zhVoices = all.filter(v => v.lang && v.lang.toLowerCase().startsWith('zh'));
+    if(zhVoices.length === 0){ zhVoices = all; } // 최후 fallback
+    chosenVoice = pickBestVoice(zhVoices);
+
+    voiceSelect.innerHTML = '';
+    zhVoices.forEach(v=>{
+      const opt = document.createElement('option');
+      opt.value = v.name;
+      opt.textContent = v.name + ' (' + v.lang + ')';
+      if(chosenVoice && v.name === chosenVoice.name) opt.selected = true;
+      voiceSelect.appendChild(opt);
+    });
+  }
+  if('speechSynthesis' in window){
+    loadVoices();
+    speechSynthesis.onvoiceschanged = loadVoices;
+  }
+  voiceSelect.addEventListener('change', ()=>{
+    chosenVoice = zhVoices.find(v => v.name === voiceSelect.value) || chosenVoice;
+  });
+
+  // 문장부호 기준으로 끊어서, 사람처럼 짧게 숨 쉬며 읽기
+  function splitClauses(text){
+    return text.split(/([，,。！!？?…])/).reduce((acc, part, idx, arr)=>{
+      if(!part) return acc;
+      if(/[，,。！!？?…]/.test(part) && acc.length){
+        acc[acc.length-1] += part;
+      } else {
+        acc.push(part);
+      }
+      return acc;
+    }, []).map(s=>s.trim()).filter(Boolean);
+  }
+
+  function speakClauses(text, onAllDone){
+    if(!('speechSynthesis' in window)) return;
+    const clauses = splitClauses(text);
+    let i = 0;
+    function next(){
+      if(i >= clauses.length){ if(onAllDone) onAllDone(); return; }
+      const u = new SpeechSynthesisUtterance(clauses[i]);
+      u.lang = 'zh-CN';
+      if(chosenVoice) u.voice = chosenVoice;
+      u.rate = 0.88;
+      u.pitch = 1.0;
+      u.onend = ()=>{
+        i++;
+        setTimeout(next, 130); // 절 사이 짧은 숨 간격
+      };
+      speechSynthesis.speak(u);
+    }
+    next();
+  }
+
+  function speak(text){
+    speechSynthesis.cancel();
+    speakClauses(text);
+  }
+
+  document.querySelectorAll('.speak-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const cn = btn.parentElement.querySelector('.cn').textContent;
+      speak(cn);
+    });
+  });
+  document.querySelectorAll('.cn').forEach(p=>{
+    p.addEventListener('click', ()=> speak(p.textContent));
+  });
+  document.getElementById('listenAllBtn').addEventListener('click', ()=>{
+    if(!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const lines = Array.from(document.querySelectorAll('.cn')).map(p=>p.textContent);
+    let i = 0;
+    function next(){
+      if(i >= lines.length) return;
+      speakClauses(lines[i], ()=>{ i++; setTimeout(next, 220); }); // 문장 사이는 조금 더 긴 간격
+    }
+    next();
+  });
+
+  /* ---------------- Web Audio SFX ---------------- */
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  var actx = null;
+  function getCtx(){ if(!AudioCtx) return null; if(!actx) actx = new AudioCtx(); return actx; }
+
+  function withPlayingState(fn){
+    var ctx = getCtx();
+    if(!ctx){ alert('이 브라우저는 효과음(Web Audio)을 지원하지 않아요.'); return; }
+    function run(){ try{ fn(ctx); } catch(err){ alert('효과음 오류: ' + err.message); } }
+    if(ctx.state === 'suspended'){ ctx.resume().then(run); } else { run(); }
+  }
+
+  function sfxWater(){
+    withPlayingState(function(ctx){
+      const dur = 1.1;
+      const bufferSize = ctx.sampleRate * dur;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for(let i=0;i<bufferSize;i++){ data[i] = (Math.random()*2-1) * 0.5; }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.value = 1200;
+      filter.Q.value = 0.7;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.15);
+      gain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + dur);
+      noise.connect(filter).connect(gain).connect(ctx.destination);
+      noise.start();
+      noise.stop(ctx.currentTime + dur);
+    });
+  }
+
+  function sfxPhone(){
+    withPlayingState(function(ctx){
+      function ring(startTime){
+        [480,620].forEach(freq=>{
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.0001, startTime);
+          gain.gain.linearRampToValueAtTime(0.22, startTime + 0.05);
+          gain.gain.linearRampToValueAtTime(0.0001, startTime + 0.4);
+          osc.connect(gain).connect(ctx.destination);
+          osc.start(startTime);
+          osc.stop(startTime + 0.42);
+        });
+      }
+      const now = ctx.currentTime;
+      ring(now);
+      ring(now + 0.55);
+    });
+  }
+
+  function sfxKnock(){
+    withPlayingState(function(ctx){
+      function thump(startTime){
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(140, startTime);
+        osc.frequency.exponentialRampToValueAtTime(60, startTime + 0.08);
+        gain.gain.setValueAtTime(0.6, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.12);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(startTime);
+        osc.stop(startTime + 0.15);
+      }
+      const now = ctx.currentTime;
+      thump(now);
+      thump(now + 0.22);
+      thump(now + 0.44);
+    });
+  }
+
+  document.getElementById('sfxWaterBtn').addEventListener('click', sfxWater);
+  document.getElementById('sfxPhoneBtn').addEventListener('click', sfxPhone);
+  document.getElementById('sfxKnockBtn').addEventListener('click', sfxKnock);
+
+  /* ---------------- 단어장 ---------------- */
+  const newWords = [
+    ['搬家','bānjiā','이사하다'],
+    ['热水器','rèshuǐqì','온수기'],
+    ['冷水','lěngshuǐ','찬물'],
+    ['坏了','huài le','고장났다'],
+    ['打电话','dǎ diànhuà','전화를 걸다'],
+    ['修理师傅','xiūlǐ shīfu','수리 기사님'],
+    ['麻烦','máfan','골칫거리, 번거롭다'],
+    ['终于','zhōngyú','마침내, 드디어'],
+    ['一会儿','yíhuìr','잠시, 조금 있다가'],
+    ['相信','xiāngxìn','믿다']
+  ];
+  const reviewWords = [
+    ['因为','yīnwèi','~때문에'],
+    ['为什么','wèishénme','왜'],
+    ['害怕','hàipà','무섭다'],
+    ['开心','kāixīn','기쁘다'],
+    ['一起','yìqǐ','함께']
+  ];
+
+  function renderVocab(list, containerId, reviewClass){
+    const box = document.getElementById(containerId);
+    list.forEach(([cn,py,kr])=>{
+      const div = document.createElement('div');
+      div.className = 'vocab-item' + (reviewClass ? ' review' : '');
+      div.innerHTML = `<div class="v-cn">${cn}</div><div class="v-py">${py}</div><div class="v-kr">${kr}</div>`;
+      div.addEventListener('click', ()=> speak(cn.replace('了','')));
+      box.appendChild(div);
+    });
+  }
+  renderVocab(newWords, 'newVocab', false);
+  renderVocab(reviewWords, 'reviewVocab', true);
+</script>
+
+</body>
+</html>
