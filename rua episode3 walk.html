@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3화 · 热天散步</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+SC:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-top:#BEE0EF;
+    --sky-bottom:#F3F2D8;
+    --grass:#9BC26A;
+    --grass-dark:#7BA24E;
+    --sun:#F7B23D;
+    --coral:#F0765A;
+    --coral-dark:#d85f45;
+    --ink:#2C3B2E;
+    --paper:#FFFBF2;
+    --bubbleA:#FFFFFF;
+    --bubbleB:#FDEBD8;
+    --muted:#8a8375;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Noto Sans KR', sans-serif;
+    background:linear-gradient(180deg,var(--sky-top) 0%, var(--sky-bottom) 55%, var(--grass) 55%, var(--grass-dark) 100%);
+    color:var(--ink);
+    min-height:100vh;
+    padding-bottom:60px;
+  }
+  .sky-deco{ position:relative; height:170px; overflow:hidden; }
+  .sun{
+    position:absolute; top:16px; right:8%;
+    width:82px; height:82px; border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #FFD873, var(--sun));
+    box-shadow:0 0 0 12px rgba(247,178,61,0.25), 0 0 0 24px rgba(247,178,61,0.12);
+  }
+  .heat{
+    position:absolute; bottom:10px; height:26px; width:3px;
+    background:linear-gradient(180deg, transparent, rgba(247,178,61,0.55));
+    animation:wiggle 1.6s ease-in-out infinite;
+  }
+  .h1{ left:20%; animation-delay:0s; }
+  .h2{ left:32%; height:34px; animation-delay:0.3s; }
+  .h3{ left:60%; animation-delay:0.6s; }
+  .h4{ left:75%; height:30px; animation-delay:0.9s; }
+  @keyframes wiggle{
+    0%,100%{ transform:translateX(0) scaleY(1); }
+    50%{ transform:translateX(3px) scaleY(1.15); }
+  }
+  .cloud{ position:absolute; background:#fff; border-radius:50px; opacity:0.85; }
+  .cloud::before, .cloud::after{ content:''; position:absolute; background:#fff; border-radius:50%; }
+  .c1{ top:30px; left:6%; width:60px; height:22px; }
+  .c1::before{ width:32px; height:32px; top:-15px; left:6px; }
+  .c1::after{ width:24px; height:24px; top:-10px; left:32px; }
+
+  header{ text-align:center; padding:6px 20px 18px; }
+  .ep-tag{
+    display:inline-block; margin-bottom:6px; padding:3px 12px; border-radius:999px;
+    background:#F5E8D6; color:#8A5A34; font-size:0.72rem; font-weight:700; letter-spacing:0.03em;
+  }
+  h1{ font-family:'Fredoka', 'Noto Sans SC', sans-serif; font-size:1.9rem; margin:0 0 4px; color:var(--ink); }
+  .subtitle{ font-size:0.95rem; color:#4a5c46; font-weight:500; margin-bottom:14px; }
+  #listenAllBtn{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:8px 18px; border:none; border-radius:999px; background:var(--coral); color:#fff;
+    font-family:'Noto Sans KR', sans-serif; font-weight:700; font-size:0.85rem; cursor:pointer;
+    box-shadow:0 3px 8px rgba(0,0,0,0.15);
+  }
+  .voice-note{ text-align:center; font-size:0.72rem; color:#6b7a67; margin-top:8px; }
+  .voice-picker{
+    margin-top:10px; display:flex; align-items:center; justify-content:center; gap:8px;
+    font-size:.8rem; color:var(--ink);
+  }
+  .voice-picker select{
+    font-family:'Noto Sans KR',sans-serif; font-size:.8rem; padding:5px 8px; border-radius:8px;
+    border:1.5px solid var(--coral); background:#fff; color:var(--ink); max-width:180px;
+  }
+
+  .stage{ max-width:640px; margin:0 auto; padding:0 16px; position:relative; }
+
+  .narration{
+    text-align:center; font-size:0.85rem; color:#6b7a67;
+    margin:18px auto; max-width:460px; padding:8px 14px;
+    background:rgba(255,255,255,0.55); border-radius:12px;
+  }
+  .narration .cn-note{ font-family:'Noto Sans SC',sans-serif; font-weight:600; color:var(--ink); display:block; margin-bottom:2px; }
+  .narration .kr-note{ font-style:italic; }
+
+  .panel{ display:flex; align-items:flex-end; gap:12px; margin:26px 0; }
+  .panel.right{ flex-direction:row-reverse; }
+
+  .avatar-col{ display:flex; flex-direction:column; align-items:center; width:66px; flex-shrink:0; }
+  .avatar{
+    width:64px; height:64px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    border:4px solid var(--paper); box-shadow:0 3px 8px rgba(0,0,0,0.15);
+  }
+  .avatar[data-char="gi"]{ background:#FFE7EE; }
+  .avatar[data-char="rua"]{ background:#F5E8D6; }
+  .name-tag{ text-align:center; font-size:0.7rem; font-weight:700; margin-top:4px; color:#4a5c46; }
+
+  .bubble{
+    position:relative; background:var(--bubbleA); border-radius:18px; padding:14px 18px;
+    max-width:calc(100% - 90px); box-shadow:0 4px 10px rgba(0,0,0,0.10);
+  }
+  .panel.right .bubble{ background:var(--bubbleB); }
+
+  .cn-line{ display:flex; align-items:center; gap:8px; margin:0 0 4px; cursor:pointer; }
+  .speak-btn{
+    flex:0 0 auto; width:28px; height:28px; border-radius:50%; border:none;
+    background:var(--coral); color:#fff; font-size:0.85rem;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+  }
+  .cn-line .cn{ margin:0; }
+  .cn{ font-family:'Noto Sans SC', sans-serif; font-weight:600; font-size:1.15rem; color:var(--ink); }
+  .pinyin{ font-style:italic; color:var(--muted); font-size:0.85rem; margin:4px 0 6px 36px; }
+  .kr{ font-size:0.88rem; color:#4a5c46; font-weight:500; margin:0 0 0 36px; border-top:1px dashed #ddd6c4; padding-top:6px; }
+
+  .scene-row{ display:flex; align-items:center; justify-content:center; gap:10px; margin:8px 0 -2px; }
+  .scene-icon{ font-size:2rem; }
+  .sfx-btn{
+    border:none; border-radius:999px; background:#fff; color:var(--coral-dark);
+    font-size:0.78rem; font-weight:700; padding:6px 14px; cursor:pointer;
+    box-shadow:0 3px 8px rgba(0,0,0,0.12);
+  }
+  .sfx-btn:active{ transform:scale(0.96); }
+
+  footer{
+    max-width:640px; margin:30px auto 0; padding:16px 22px;
+    background:var(--paper); border-radius:16px; box-shadow:0 4px 10px rgba(0,0,0,0.08);
+  }
+  footer h2{ font-family:'Noto Sans SC', sans-serif; font-size:1rem; margin:0 0 8px; color:var(--coral); }
+  .vocab-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:8px 16px; font-size:0.85rem; margin-bottom:8px; }
+  .vocab-item{ cursor:pointer; padding:4px 6px; border-radius:6px; }
+  .vocab-item .v-cn{ font-family:'Noto Sans SC', sans-serif; font-weight:600; color:var(--ink); }
+  .vocab-item .v-py{ color:var(--muted); font-style:italic; margin:0 4px; }
+  .vocab-item.review .v-cn{ color:var(--coral); }
+  .repeat-note, .review-note{ font-size:0.72rem; color:var(--muted); margin:10px 0 4px; }
+  .repeat-note b, .review-note b{ color:var(--coral-dark); }
+</style>
+</head>
+<body>
+
+<div class="sky-deco">
+  <div class="sun"></div>
+  <div class="cloud c1"></div>
+  <div class="heat h1"></div>
+  <div class="heat h2"></div>
+  <div class="heat h3"></div>
+  <div class="heat h4"></div>
+</div>
+
+<header>
+  <span class="ep-tag">3화 · 더운 날 산책</span>
+  <h1>热天散步</h1>
+  <div class="subtitle">더운 날 산책 · 기쁨이와 루아의 대화</div>
+  <button id="listenAllBtn">▶ 전체 대화 듣기</button>
+  <div class="voice-note">문장·단어 클릭 = 발음 듣기 · 🔉 버튼 = 효과음 듣기</div>
+  <div class="voice-picker">
+    <label for="voiceSelect">🎙 음성 선택</label>
+    <select id="voiceSelect"><option>목소리 불러오는 중…</option></select>
+  </div>
+</header>
+
+<div class="stage">
+
+  <div class="narration">
+    <span class="cn-note">今天天气很热，可是小狗一直吵着要出去散步。</span>
+    <span class="kr-note">(오늘은 날씨가 아주 더워요. 그런데 루아가 산책을 나가자고 자꾸 졸라요.)</span>
+  </div>
+
+  <div class="panel right">
+    <div class="avatar-col">
+      <div class="avatar" data-char="rua" data-emotion="excited"></div>
+      <div class="name-tag">루아</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">我们出去散步，好吗？</p></div>
+      <p class="pinyin">Wǒmen chūqù sànbù, hǎo ma?</p>
+      <p class="kr">우리 산책 나가자, 응?</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="avatar-col">
+      <div class="avatar" data-char="gi" data-emotion="normal"></div>
+      <div class="name-tag">기쁨이</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">今天很热，你真的想出去吗？</p></div>
+      <p class="pinyin">Jīntiān hěn rè, nǐ zhēnde xiǎng chūqù ma?</p>
+      <p class="kr">오늘 되게 더운데, 정말 나가고 싶어?</p>
+    </div>
+  </div>
+
+  <div class="panel right">
+    <div class="avatar-col">
+      <div class="avatar" data-char="rua" data-emotion="excited"></div>
+      <div class="name-tag">루아</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">想！我很想出去。</p></div>
+      <p class="pinyin">Xiǎng! Wǒ hěn xiǎng chūqù.</p>
+      <p class="kr">응! 나가고 싶어.</p>
+    </div>
+  </div>
+
+  <div class="scene-row">
+    <span class="scene-icon">🚶‍♀️🐕🌞</span>
+    <button class="sfx-btn" id="walkSfx">🔉 걷는 소리</button>
+  </div>
+  <div class="narration">둘은 결국 밖으로 나갔어요. 그런데 걷는 동안 루아가 자꾸 멈춰서 소변을 봐요.</div>
+
+  <div class="scene-row">
+    <span class="scene-icon">💦🐾</span>
+    <button class="sfx-btn" id="peeSfx1">🔉 쉬~ 소리</button>
+  </div>
+
+  <div class="panel">
+    <div class="avatar-col">
+      <div class="avatar" data-char="gi" data-emotion="concerned"></div>
+      <div class="name-tag">기쁨이</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">你今天尿尿了很多次，你不舒服吗？</p></div>
+      <p class="pinyin">Nǐ jīntiān niào niào le hěn duō cì, nǐ bù shūfu ma?</p>
+      <p class="kr">루아, 너 오늘 오줌을 너무 여러 번 누네, 어디 아파?</p>
+    </div>
+  </div>
+
+  <div class="panel right">
+    <div class="avatar-col">
+      <div class="avatar" data-char="rua" data-emotion="sorry"></div>
+      <div class="name-tag">루아</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">我没有不舒服。昨天我错了，尿在你的床上，对不起。</p></div>
+      <p class="pinyin">Wǒ méiyǒu bù shūfu. Zuótiān wǒ cuò le, niào zài nǐ de chuáng shàng, duìbuqǐ.</p>
+      <p class="kr">안 아파. 어제 내가 잘못해서 네 침대에 오줌을 쌌잖아, 미안해.</p>
+    </div>
+  </div>
+
+  <div class="panel right">
+    <div class="avatar-col">
+      <div class="avatar" data-char="rua" data-emotion="trusting"></div>
+      <div class="name-tag">루아</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">所以我现在要在外面尿尿，尿完了才回家。</p></div>
+      <p class="pinyin">Suǒyǐ wǒ xiànzài yào zài wàimiàn niào niào, niào wán le cái huí jiā.</p>
+      <p class="kr">그래서 지금 밖에서 다 누고 나서 집에 가려고.</p>
+    </div>
+  </div>
+
+  <div class="scene-row">
+    <span class="scene-icon">🥹💕</span>
+    <button class="sfx-btn" id="chime1">🔉 훈훈한 소리</button>
+  </div>
+
+  <div class="panel">
+    <div class="avatar-col">
+      <div class="avatar" data-char="gi" data-emotion="happy"></div>
+      <div class="name-tag">기쁨이</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">你真乖！谢谢你还记得。</p></div>
+      <p class="pinyin">Nǐ zhēn guāi! Xièxiè nǐ hái jìde.</p>
+      <p class="kr">루아, 정말 착하다! 기억해줘서 고마워.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="avatar-col">
+      <div class="avatar" data-char="gi" data-emotion="warm"></div>
+      <div class="name-tag">기쁨이</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">我们一起走吧，我不生气了。</p></div>
+      <p class="pinyin">Wǒmen yìqǐ zǒu ba, wǒ bù shēngqì le.</p>
+      <p class="kr">우리 같이 걷자, 나 화 안 났어.</p>
+    </div>
+  </div>
+
+  <div class="panel right">
+    <div class="avatar-col">
+      <div class="avatar" data-char="rua" data-emotion="joyful"></div>
+      <div class="name-tag">루아</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">好，我们回家吧！我爱你！</p></div>
+      <p class="pinyin">Hǎo, wǒmen huí jiā ba! Wǒ ài nǐ!</p>
+      <p class="kr">좋아, 집에 가자! 사랑해, 기쁨아.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="avatar-col">
+      <div class="avatar" data-char="gi" data-emotion="happy"></div>
+      <div class="name-tag">기쁨이</div>
+    </div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">我也爱你！散步真开心。</p></div>
+      <p class="pinyin">Wǒ yě ài nǐ! Sànbù zhēn kāixīn.</p>
+      <p class="kr">나도 사랑해! 산책 정말 즐거웠어.</p>
+    </div>
+  </div>
+
+  <div class="scene-row">
+    <span class="scene-icon">🏠✨</span>
+    <button class="sfx-btn" id="doorSfx">🔉 문 여는 소리</button>
+  </div>
+
+</div>
+
+<footer>
+  <h2>오늘의 단어 (새 단어)</h2>
+  <div class="vocab-grid" id="newVocab"></div>
+  <div class="repeat-note">💡 <b>出去</b>·<b>散步</b>·<b>舒服</b>·<b>回家</b>(2회) — 이 단어들은 대화 속에서 두 번씩 등장해요. 나머지 단어는 이번 편에 1번 등장하지만, 상황과 함께 기억하면 오래 남아요.</div>
+
+  <div class="review-note">🔁 1·2화 복습 단어</div>
+  <div class="vocab-grid" id="reviewVocab"></div>
+</footer>
+
+<script>
+  /* ---------------- 아바타 SVG ---------------- */
+  function girlFace(emotion){
+    const eyes = {
+      normal:   '<circle cx="24" cy="30" r="4" fill="#2b2b2b"/><circle cx="40" cy="30" r="4" fill="#2b2b2b"/>',
+      surprised:'<circle cx="24" cy="29" r="5.5" fill="#2b2b2b"/><circle cx="40" cy="29" r="5.5" fill="#2b2b2b"/>',
+      warm:     '<path d="M20 30 Q24 26 28 30" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M36 30 Q40 26 44 30" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+      happy:    '<path d="M20 29 Q24 25 28 29" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M36 29 Q40 25 44 29" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+      concerned:'<path d="M18 28 Q23 25 27 28" stroke="#2b2b2b" stroke-width="2.3" fill="none" stroke-linecap="round"/><path d="M37 28 Q41 25 45 28" stroke="#2b2b2b" stroke-width="2.3" fill="none" stroke-linecap="round"/><circle cx="23" cy="31" r="2.6" fill="#2b2b2b"/><circle cx="41" cy="31" r="2.6" fill="#2b2b2b"/>'
+    };
+    const mouth = {
+      normal:   '<path d="M26 40 Q32 44 38 40" stroke="#c9584a" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+      surprised:'<ellipse cx="32" cy="41" rx="4" ry="5" fill="#c9584a"/>',
+      warm:     '<path d="M25 39 Q32 46 39 39" stroke="#c9584a" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+      happy:    '<path d="M24 38 Q32 47 40 38" stroke="#c9584a" stroke-width="2.8" fill="none" stroke-linecap="round"/>',
+      concerned:'<path d="M27 41 Q32 39 37 41" stroke="#c9584a" stroke-width="2.3" fill="none" stroke-linecap="round"/>'
+    };
+    return `
+    <svg viewBox="0 0 64 64" width="52" height="52">
+      <circle cx="32" cy="34" r="22" fill="#ffe3c4"/>
+      <path d="M10 30 Q10 8 32 8 Q54 8 54 30 Q54 18 32 16 Q10 18 10 30 Z" fill="#5B3A29"/>
+      <path d="M10 28 Q8 42 14 46 Q12 34 16 26 Z" fill="#5B3A29"/>
+      <path d="M54 28 Q56 42 50 46 Q52 34 48 26 Z" fill="#5B3A29"/>
+      <circle cx="18" cy="38" r="3.2" fill="#f6a9a0" opacity=".7"/>
+      <circle cx="46" cy="38" r="3.2" fill="#f6a9a0" opacity=".7"/>
+      ${eyes[emotion]||eyes.normal}
+      ${mouth[emotion]||mouth.normal}
+    </svg>`;
+  }
+
+  function dogFace(emotion){
+    const eyes = {
+      excited: '<circle cx="23" cy="29" r="4.5" fill="#2b2b2b"/><circle cx="41" cy="29" r="4.5" fill="#2b2b2b"/>',
+      worried: '<path d="M18 27 Q23 24 27 28" stroke="#2b2b2b" stroke-width="2.3" fill="none" stroke-linecap="round"/><path d="M37 28 Q41 24 46 27" stroke="#2b2b2b" stroke-width="2.3" fill="none" stroke-linecap="round"/><circle cx="23" cy="31" r="3" fill="#2b2b2b"/><circle cx="41" cy="31" r="3" fill="#2b2b2b"/>',
+      trusting:'<path d="M19 29 Q23 26 27 29" stroke="#2b2b2b" stroke-width="2.3" fill="none" stroke-linecap="round"/><path d="M37 29 Q41 26 45 29" stroke="#2b2b2b" stroke-width="2.3" fill="none" stroke-linecap="round"/>',
+      joyful:  '<path d="M18 30 Q23 24 28 30" stroke="#2b2b2b" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M36 30 Q41 24 46 30" stroke="#2b2b2b" stroke-width="2.6" fill="none" stroke-linecap="round"/>',
+      sorry:   '<path d="M19 30 Q23 33 27 30" stroke="#2b2b2b" stroke-width="2.3" fill="none" stroke-linecap="round"/><path d="M37 30 Q41 33 45 30" stroke="#2b2b2b" stroke-width="2.3" fill="none" stroke-linecap="round"/><ellipse cx="21" cy="35" rx="2" ry="3.4" fill="#f6b8cf"/>'
+    };
+    const mouth = {
+      excited: '<path d="M24 39 Q32 45 40 39" stroke="#8a5a3a" stroke-width="2.4" fill="none" stroke-linecap="round"/><ellipse cx="32" cy="43" rx="4.5" ry="6" fill="#f28fa0"/>',
+      worried: '<path d="M27 41 Q32 38 37 41" stroke="#8a5a3a" stroke-width="2.4" fill="none" stroke-linecap="round"/>',
+      trusting:'<path d="M25 39 Q32 43 39 39" stroke="#8a5a3a" stroke-width="2.4" fill="none" stroke-linecap="round"/>',
+      joyful:  '<path d="M22 38 Q32 47 42 38" stroke="#8a5a3a" stroke-width="2.6" fill="none" stroke-linecap="round"/><ellipse cx="32" cy="42" rx="5" ry="7" fill="#f28fa0"/>',
+      sorry:   '<path d="M27 42 Q32 39 37 42" stroke="#8a5a3a" stroke-width="2.2" fill="none" stroke-linecap="round"/>'
+    };
+    return `
+    <svg viewBox="0 0 64 64" width="52" height="52">
+      <ellipse cx="14" cy="24" rx="8" ry="12" fill="#C88B4E" transform="rotate(-20 14 24)"/>
+      <ellipse cx="50" cy="24" rx="8" ry="12" fill="#C88B4E" transform="rotate(20 50 24)"/>
+      <circle cx="32" cy="34" r="21" fill="#EAC79A"/>
+      <ellipse cx="32" cy="42" rx="13" ry="10" fill="#F7E3C6"/>
+      ${eyes[emotion]||eyes.excited}
+      <ellipse cx="32" cy="35" rx="3.2" ry="2.4" fill="#3A2A22"/>
+      ${mouth[emotion]||mouth.excited}
+    </svg>`;
+  }
+
+  document.querySelectorAll('.avatar').forEach(el=>{
+    const char = el.dataset.char, emo = el.dataset.emotion;
+    el.innerHTML = char==='gi' ? girlFace(emo) : dogFace(emo);
+  });
+
+  /* ---------------- TTS (자연스러운 발화) ---------------- */
+  let zhVoices = [];
+  let chosenVoice = null;
+  const voiceSelect = document.getElementById('voiceSelect');
+
+  function pickBestVoice(pool){
+    const preferred = /Tingting|Ting-Ting|Mei-?Jia|Sinji|Sin-?ji|Google 普通话|普通话|Yaoyao|Xiaoxiao|Enhanced|Premium/i;
+    return pool.find(v => preferred.test(v.name)) || pool[0];
+  }
+
+  function loadVoices(){
+    const all = speechSynthesis.getVoices();
+    zhVoices = all.filter(v => v.lang && v.lang.toLowerCase().startsWith('zh'));
+    if(zhVoices.length === 0){ zhVoices = all; }
+    chosenVoice = pickBestVoice(zhVoices);
+
+    voiceSelect.innerHTML = '';
+    zhVoices.forEach(v=>{
+      const opt = document.createElement('option');
+      opt.value = v.name;
+      opt.textContent = v.name + ' (' + v.lang + ')';
+      if(chosenVoice && v.name === chosenVoice.name) opt.selected = true;
+      voiceSelect.appendChild(opt);
+    });
+  }
+  if('speechSynthesis' in window){
+    loadVoices();
+    speechSynthesis.onvoiceschanged = loadVoices;
+  }
+  voiceSelect.addEventListener('change', ()=>{
+    chosenVoice = zhVoices.find(v => v.name === voiceSelect.value) || chosenVoice;
+  });
+
+  function splitClauses(text){
+    return text.split(/([，,。！!？?…])/).reduce((acc, part)=>{
+      if(!part) return acc;
+      if(/[，,。！!？?…]/.test(part) && acc.length){ acc[acc.length-1] += part; }
+      else { acc.push(part); }
+      return acc;
+    }, []).map(s=>s.trim()).filter(Boolean);
+  }
+
+  function speakClauses(text, onAllDone){
+    if(!('speechSynthesis' in window)) return;
+    const clauses = splitClauses(text);
+    let i = 0;
+    function next(){
+      if(i >= clauses.length){ if(onAllDone) onAllDone(); return; }
+      const u = new SpeechSynthesisUtterance(clauses[i]);
+      u.lang = 'zh-CN';
+      if(chosenVoice) u.voice = chosenVoice;
+      u.rate = 0.88;
+      u.pitch = 1.0;
+      u.onend = ()=>{ i++; setTimeout(next, 130); };
+      speechSynthesis.speak(u);
+    }
+    next();
+  }
+
+  function speak(text){
+    if(!('speechSynthesis' in window)){
+      alert('이 브라우저는 음성 읽기를 지원하지 않아요. Chrome에서 열어보세요.');
+      return;
+    }
+    speechSynthesis.cancel();
+    speakClauses(text);
+  }
+
+  document.querySelectorAll('.cn-line').forEach(line=>{
+    const btn = line.querySelector('.speak-btn');
+    const text = line.querySelector('.cn').textContent;
+    function trigger(e){ if(e) e.stopPropagation(); speak(text); }
+    btn.addEventListener('click', trigger);
+    line.addEventListener('click', trigger);
+  });
+
+  document.getElementById('listenAllBtn').addEventListener('click', ()=>{
+    if(!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const lines = Array.from(document.querySelectorAll('.cn')).map(p=>p.textContent);
+    let i = 0;
+    function next(){
+      if(i >= lines.length) return;
+      speakClauses(lines[i], ()=>{ i++; setTimeout(next, 220); });
+    }
+    next();
+  });
+
+  /* ---------------- Web Audio SFX ---------------- */
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  var actx = null;
+  function getCtx(){ if(!AudioCtx) return null; if(!actx) actx = new AudioCtx(); return actx; }
+
+  function withPlayingState(btn, durationMs, fn){
+    var ctx = getCtx();
+    if(!ctx){ alert('이 브라우저는 효과음 재생을 지원하지 않아요.'); return; }
+    function run(){ try{ fn(); } catch(err){ alert('효과음 오류: ' + err.message); } }
+    if(ctx.state === 'suspended'){ ctx.resume().then(run); } else { run(); }
+  }
+
+  function playPee(){
+    var now = actx.currentTime, blips = 10;
+    for(var i = 0; i < blips; i++){
+      var t = now + i * 0.09;
+      var osc = actx.createOscillator(), gain = actx.createGain();
+      osc.type = 'sine';
+      var baseFreq = 2200 - i * 60 + Math.random() * 120;
+      osc.frequency.setValueAtTime(baseFreq, t);
+      osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.6, t + 0.07);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(0.05, t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.08);
+      osc.connect(gain); gain.connect(actx.destination);
+      osc.start(t); osc.stop(t + 0.09);
+    }
+  }
+
+  function playFootsteps(){
+    var now = actx.currentTime, steps = 6;
+    for(var i = 0; i < steps; i++){
+      var t = now + i * 0.28;
+      var osc = actx.createOscillator(), gain = actx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(110, t);
+      osc.frequency.exponentialRampToValueAtTime(60, t + 0.12);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(0.16, t + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.15);
+      osc.connect(gain); gain.connect(actx.destination);
+      osc.start(t); osc.stop(t + 0.16);
+    }
+  }
+
+  function playChime(){
+    var now = actx.currentTime;
+    var notes = [523.25, 659.25, 783.99, 1046.5];
+    notes.forEach(function(freq, i){
+      var t = now + i * 0.14;
+      var osc = actx.createOscillator(), gain = actx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, t);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(0.08, t + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.5);
+      osc.connect(gain); gain.connect(actx.destination);
+      osc.start(t); osc.stop(t + 0.55);
+    });
+  }
+
+  function playDoor(){
+    var now = actx.currentTime;
+    var bufferSize = actx.sampleRate * 0.4;
+    var buffer = actx.createBuffer(1, bufferSize, actx.sampleRate);
+    var data = buffer.getChannelData(0);
+    for(var i = 0; i < bufferSize; i++){ data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize); }
+    var noise = actx.createBufferSource();
+    noise.buffer = buffer;
+    var filter = actx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1200, now);
+    filter.frequency.exponentialRampToValueAtTime(200, now + 0.4);
+    var gain = actx.createGain();
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+    noise.connect(filter); filter.connect(gain); gain.connect(actx.destination);
+    noise.start(now); noise.stop(now + 0.4);
+  }
+
+  document.getElementById('walkSfx').addEventListener('click', function(){ withPlayingState(this, 1800, playFootsteps); });
+  document.getElementById('peeSfx1').addEventListener('click', function(){ withPlayingState(this, 1000, playPee); });
+  document.getElementById('chime1').addEventListener('click', function(){ withPlayingState(this, 700, playChime); });
+  document.getElementById('doorSfx').addEventListener('click', function(){ withPlayingState(this, 500, playDoor); });
+
+  /* ---------------- 단어장 ---------------- */
+  const newWords = [
+    ['天气','tiānqì','날씨'],
+    ['热','rè','덥다'],
+    ['出去','chūqù','나가다'],
+    ['散步','sànbù','산책하다'],
+    ['次','cì','번, 회'],
+    ['舒服','shūfu','편안하다'],
+    ['昨天','zuótiān','어제'],
+    ['现在','xiànzài','지금'],
+    ['回家','huí jiā','집에 가다'],
+    ['生气','shēngqì','화나다'],
+    ['开心','kāixīn','즐겁다']
+  ];
+  const reviewWords = [
+    ['床','chuáng','침대'],
+    ['对不起','duìbuqǐ','미안해'],
+    ['错','cuò','잘못'],
+    ['外面','wàimiàn','밖'],
+    ['知道','zhīdào','알다'],
+    ['真','zhēn','정말'],
+    ['乖','guāi','착하다'],
+    ['谢谢','xièxiè','고마워'],
+    ['爱','ài','사랑하다'],
+    ['尿尿','niào niào','오줌 누다']
+  ];
+
+  function renderVocab(list, containerId, reviewClass){
+    const box = document.getElementById(containerId);
+    list.forEach(([cn,py,kr])=>{
+      const div = document.createElement('div');
+      div.className = 'vocab-item' + (reviewClass ? ' review' : '');
+      div.innerHTML = `<span class="v-cn">${cn}</span><span class="v-py">${py}</span>${kr}`;
+      div.addEventListener('click', ()=> speak(cn));
+      box.appendChild(div);
+    });
+  }
+  renderVocab(newWords, 'newVocab', false);
+  renderVocab(reviewWords, 'reviewVocab', true);
+</script>
+
+</body>
+</html>
