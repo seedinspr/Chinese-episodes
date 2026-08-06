@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>민지와 함께 배우는 몸 & 건강 표현</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F7F2E7;
+    --card:#FFFFFF;
+    --ink:#2E2A26;
+    --ink-soft:#6B6259;
+    --teal:#2F8F86;
+    --teal-deep:#1F6B64;
+    --coral:#F0765A;
+    --skin:#FFD9B3;
+    --hair:#4A3428;
+    --line:#E7DFD0;
+    --glow:#FFE1A8;
+    --hold:#7A5CC0;
+    --hold-deep:#5B41A0;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Noto Sans KR',sans-serif;
+    -webkit-tap-highlight-color:transparent;
+    padding-bottom:60px;
+  }
+  h1,h2,.ep-tag,.speak-btn,.listen-all{font-family:'Fredoka',sans-serif;}
+  .cn{font-family:'Noto Sans SC',sans-serif;}
+
+  header{
+    padding:28px 20px 22px;
+    text-align:center;
+    background:linear-gradient(180deg,#FFFFFF 0%,var(--cream) 100%);
+    border-bottom:1px solid var(--line);
+  }
+  .ep-tag{
+    display:inline-block;
+    background:var(--teal);
+    color:#fff;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.02em;
+    padding:5px 14px;
+    border-radius:999px;
+    margin-bottom:10px;
+  }
+  h1{
+    font-size:clamp(24px,6vw,34px);
+    font-weight:700;
+    margin:4px 0 6px;
+    color:var(--ink);
+  }
+  .subtitle{
+    color:var(--ink-soft);
+    font-size:14.5px;
+    margin-bottom:6px;
+    line-height:1.5;
+  }
+  .subtitle b{color:var(--hold-deep);}
+  .controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    align-items:center;
+    margin-top:14px;
+  }
+  button{
+    font-family:inherit;
+    cursor:pointer;
+    border:none;
+  }
+  .listen-all{
+    background:var(--coral);
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    padding:11px 22px;
+    border-radius:999px;
+    box-shadow:0 4px 0 #C95638;
+    transition:transform .08s;
+  }
+  .listen-all:active{transform:translateY(3px);box-shadow:0 1px 0 #C95638;}
+  .voice-picker{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    background:#fff;
+    border:1px solid var(--line);
+    padding:7px 12px;
+    border-radius:999px;
+  }
+  select{
+    font-family:inherit;
+    font-size:12.5px;
+    border:none;
+    background:transparent;
+    color:var(--ink);
+    max-width:150px;
+  }
+
+  main{
+    max-width:1040px;
+    margin:0 auto;
+    padding:26px 16px 0;
+  }
+
+  .section-title{
+    font-size:19px;
+    font-weight:700;
+    margin:0 0 4px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .section-title .num{
+    background:var(--ink);
+    color:#fff;
+    font-family:'Fredoka',sans-serif;
+    font-size:12px;
+    width:22px;height:22px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .section-desc{
+    color:var(--ink-soft);
+    font-size:13.5px;
+    margin:0 0 16px;
+  }
+
+  /* ---- interactive body layout ---- */
+  .body-wrap{
+    display:grid;
+    grid-template-columns:420px 1fr;
+    gap:20px;
+    align-items:start;
+  }
+  @media (max-width:760px){
+    .body-wrap{grid-template-columns:1fr;}
+  }
+
+  .stage-card{
+    background:var(--card);
+    border-radius:22px;
+    border:1px solid var(--line);
+    padding:14px 8px 10px;
+    box-shadow:0 6px 18px rgba(46,42,38,.06);
+    position:sticky;
+    top:10px;
+  }
+  @media (max-width:760px){ .stage-card{position:static;} }
+
+  #figure{width:100%;height:auto;display:block;}
+  .part{cursor:pointer;transition:filter .15s;touch-action:none;-webkit-touch-callout:none;user-select:none;}
+  .part:hover, .part.active{filter:brightness(1.08);}
+  .part.holding{filter:brightness(1.15) saturate(1.15);}
+  .label-text{font-family:'Noto Sans SC',sans-serif;font-weight:700;font-size:13px;fill:var(--ink);pointer-events:none;}
+  .label-py{font-family:'Noto Sans KR',sans-serif;font-weight:600;font-size:8.5px;fill:var(--coral);pointer-events:none;}
+  .leader{stroke:#C9BFA8;stroke-width:1;stroke-dasharray:2,2;pointer-events:none;}
+  .label-dot{fill:var(--teal);pointer-events:none;}
+  .label-hit{fill:transparent;}
+  .label-hit:hover ~ .label-text, .label-hit.active ~ .label-text{fill:var(--teal-deep);}
+
+  .hint{
+    text-align:center;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-top:6px;
+  }
+  .hint b{color:var(--hold-deep);}
+
+  .info-card{
+    background:var(--card);
+    border-radius:20px;
+    border:1px solid var(--line);
+    padding:18px;
+    box-shadow:0 6px 18px rgba(46,42,38,.06);
+    min-height:110px;
+    transition:border-color .15s;
+  }
+  .info-empty{
+    color:var(--ink-soft);
+    font-size:14px;
+    text-align:center;
+    padding:20px 6px;
+  }
+  .info-top{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .info-cn{
+    font-size:34px;
+    font-weight:700;
+  }
+  .info-speak{
+    background:var(--teal);
+    color:#fff;
+    width:44px;height:44px;
+    border-radius:50%;
+    font-size:19px;
+    flex-shrink:0;
+    box-shadow:0 3px 0 var(--teal-deep);
+  }
+  .info-speak:active{transform:translateY(2px);box-shadow:0 1px 0 var(--teal-deep);}
+  .info-pinyin{
+    color:var(--coral);
+    font-size:15px;
+    font-weight:600;
+    margin:8px 0 2px;
+  }
+  .info-kr{
+    font-size:15px;
+    color:var(--ink);
+  }
+
+  /* ---- sentence-on-hold panel ---- */
+  .sentence-panel{
+    margin-top:14px;
+    border-radius:18px;
+    border:2px solid var(--hold);
+    background:#F6F2FC;
+    padding:14px 16px;
+    display:none;
+  }
+  .sentence-panel.show{display:block;}
+  .sentence-panel-label{
+    font-size:11.5px;
+    font-weight:700;
+    color:var(--hold-deep);
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-bottom:8px;
+  }
+  .sentence-panel-label .dot{
+    width:7px;height:7px;border-radius:50%;background:var(--hold);
+    animation:pulse 1s infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+  .sp-item{padding:6px 0;border-top:1px solid #E3D9F5;}
+  .sp-item:first-child{border-top:none;padding-top:0;}
+  .sp-item .cn{font-size:17px;font-weight:700;}
+  .sp-item .py{font-size:12.5px;color:var(--coral);font-weight:600;margin-top:2px;}
+  .sp-item .kr{font-size:12.5px;color:var(--ink-soft);margin-top:1px;}
+  .sp-empty{font-size:13px;color:var(--ink-soft);}
+
+  .progress{
+    margin-top:14px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
+  .progress-bar{
+    height:6px;
+    background:var(--line);
+    border-radius:99px;
+    overflow:hidden;
+    margin-top:5px;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--teal);
+    width:0%;
+    transition:width .3s;
+  }
+
+  /* ---- vocab grid ---- */
+  .vocab-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+    gap:10px;
+    margin-top:14px;
+  }
+  .vocab-chip{
+    background:var(--card);
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    padding:10px 8px;
+    text-align:center;
+    cursor:pointer;
+    transition:border-color .15s, transform .1s;
+    touch-action:manipulation;
+  }
+  .vocab-chip:active{transform:scale(.97);}
+  .vocab-chip.seen{border-color:var(--teal);background:#F0FAF8;}
+  .vocab-chip .cn{font-size:19px;font-weight:700;}
+  .vocab-chip .py{font-size:11px;color:var(--coral);font-weight:600;margin-top:2px;}
+  .vocab-chip .kr{font-size:11px;color:var(--ink-soft);margin-top:1px;}
+
+  /* ---- sentence cards (full list section) ---- */
+  .sentence-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin-top:16px;
+  }
+  .sentence-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    box-shadow:0 4px 12px rgba(46,42,38,.04);
+  }
+  .sentence-speak{
+    background:var(--coral);
+    color:#fff;
+    width:40px;height:40px;
+    border-radius:50%;
+    font-size:16px;
+    flex-shrink:0;
+    box-shadow:0 3px 0 #C95638;
+  }
+  .sentence-speak:active{transform:translateY(2px);box-shadow:0 1px 0 #C95638;}
+  .sentence-body .cn{font-size:19px;font-weight:600;}
+  .sentence-body .py{font-size:13px;color:var(--coral);font-weight:600;margin-top:3px;}
+  .sentence-body .kr{font-size:13.5px;color:var(--ink-soft);margin-top:2px;}
+  .tag{
+    display:inline-block;
+    font-size:10.5px;
+    background:var(--teal);
+    color:#fff;
+    padding:2px 8px;
+    border-radius:99px;
+    margin-bottom:5px;
+    font-weight:600;
+  }
+
+  footer{
+    max-width:1040px;
+    margin:36px auto 0;
+    padding:0 16px;
+    color:var(--ink-soft);
+    font-size:12.5px;
+    text-align:center;
+    line-height:1.6;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="ep-tag">身体 & 健康 · 몸과 건강 표현</span>
+  <h1>민지와 함께 배우는 <span class="cn">身体</span></h1>
+  <div class="subtitle">그림의 <b>한자·병음 표시</b>를 살짝 누르면 발음이 나오고,<br><b>꾹 누르고 있으면</b> 그 부위와 관련된 예문이 나타나요.</div>
+  <div class="controls">
+    <button class="listen-all" id="listenAllBtn">▶ 전체 단어 듣기</button>
+    <div class="voice-picker">
+      <span>🎙</span>
+      <select id="voiceSelect"><option>음성 불러오는 중…</option></select>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="section-title"><span class="num">1</span>몸 그림에서 신체 부위 배우기</div>
+  <div class="section-desc">짧게 누르면 발음, <b>꾹 누르고 있으면</b> 관련 예문이 나와요.</div>
+
+  <div class="body-wrap">
+    <div class="stage-card">
+      <svg id="figure" viewBox="0 0 420 560" xmlns="http://www.w3.org/2000/svg">
+        <!-- hair back -->
+        <path d="M168 55 Q155 20 210 15 Q265 20 252 55 L256 100 Q210 108 164 100 Z" fill="#4A3428"/>
+        <!-- legs -->
+        <g class="part" data-part="tui">
+          <path d="M178 360 L172 500 Q172 512 184 512 L194 512 Q200 512 200 500 L200 365 Z" fill="#3E7C93"/>
+          <path d="M242 360 L248 500 Q248 512 236 512 L226 512 Q220 512 220 500 L220 365 Z" fill="#3E7C93"/>
+        </g>
+        <!-- feet -->
+        <g class="part" data-part="jiao">
+          <ellipse cx="182" cy="522" rx="20" ry="11" fill="#2E2A26"/>
+          <ellipse cx="238" cy="522" rx="20" ry="11" fill="#2E2A26"/>
+        </g>
+        <!-- torso / dress -->
+        <path d="M164 160 Q210 145 256 160 L266 350 Q210 372 154 350 Z" fill="#F0765A"/>
+        <!-- belly -->
+        <g class="part" data-part="duzi">
+          <ellipse cx="210" cy="270" rx="34" ry="30" fill="#F0765A" opacity="0"/>
+        </g>
+        <!-- arms -->
+        <g class="part" data-part="gebo">
+          <path d="M160 168 Q128 190 126 260 Q125 290 142 300 L160 280 Q150 250 160 200 Z" fill="#FFD9B3"/>
+          <path d="M260 168 Q292 190 294 260 Q295 290 278 300 L260 280 Q270 250 260 200 Z" fill="#FFD9B3"/>
+        </g>
+        <!-- hands -->
+        <g class="part" data-part="shou">
+          <circle cx="140" cy="304" r="16" fill="#FFD9B3"/>
+          <circle cx="280" cy="304" r="16" fill="#FFD9B3"/>
+        </g>
+        <!-- shoulders -->
+        <g class="part" data-part="jianbang">
+          <ellipse cx="168" cy="163" rx="16" ry="10" fill="#F0765A"/>
+          <ellipse cx="252" cy="163" rx="16" ry="10" fill="#F0765A"/>
+        </g>
+        <!-- neck -->
+        <g class="part" data-part="bozi">
+          <rect x="196" y="112" width="28" height="26" rx="8" fill="#F2C08F"/>
+        </g>
+        <!-- head -->
+        <g class="part" data-part="tou">
+          <circle cx="210" cy="80" r="48" fill="#FFD9B3"/>
+        </g>
+        <!-- hair front -->
+        <g class="part" data-part="toufa">
+          <path d="M164 78 Q158 30 210 26 Q262 30 256 78 Q252 50 210 46 Q168 50 164 78 Z" fill="#4A3428"/>
+          <path d="M160 76 Q156 110 168 128 Q160 95 164 78 Z" fill="#4A3428"/>
+          <path d="M260 76 Q264 110 252 128 Q260 95 256 78 Z" fill="#4A3428"/>
+        </g>
+        <!-- ears -->
+        <g class="part" data-part="erduo">
+          <circle cx="161" cy="82" r="9" fill="#FFD9B3"/>
+          <circle cx="259" cy="82" r="9" fill="#FFD9B3"/>
+        </g>
+        <!-- face -->
+        <g class="part" data-part="lian">
+          <ellipse cx="210" cy="92" rx="30" ry="26" fill="#FFD9B3" opacity="0"/>
+        </g>
+        <g class="part" data-part="yanjing">
+          <ellipse cx="195" cy="80" rx="5.5" ry="6.5" fill="#2E2A26"/>
+          <ellipse cx="225" cy="80" rx="5.5" ry="6.5" fill="#2E2A26"/>
+        </g>
+        <g class="part" data-part="bizi">
+          <path d="M210 84 Q207 94 210 96 Q214 96 212 90" stroke="#C98A5A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        </g>
+        <g class="part" data-part="zui">
+          <path d="M198 104 Q210 112 222 104" stroke="#B4523B" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </g>
+        <g class="part" data-part="yachi">
+          <rect x="206" y="105" width="8" height="3" fill="#ffffff"/>
+        </g>
+
+        <!-- ===== leader-line labels (hanzi + pinyin, always visible) ===== -->
+        <!-- right column -->
+        <g class="part" data-part="tou">
+          <line class="leader" x1="258" y1="70" x2="300" y2="56"/>
+          <circle class="label-dot" cx="258" cy="70" r="2.5"/>
+          <rect class="label-hit" x="298" y="46" width="70" height="18"/>
+          <text class="label-text" x="302" y="60">头 <tspan class="label-py">tóu</tspan></text>
+        </g>
+        <g class="part" data-part="erduo">
+          <line class="leader" x1="259" y1="82" x2="300" y2="80"/>
+          <circle class="label-dot" cx="259" cy="82" r="2.5"/>
+          <rect class="label-hit" x="298" y="70" width="80" height="18"/>
+          <text class="label-text" x="302" y="84">耳朵 <tspan class="label-py">ěrduo</tspan></text>
+        </g>
+        <g class="part" data-part="yanjing">
+          <line class="leader" x1="225" y1="80" x2="300" y2="104"/>
+          <circle class="label-dot" cx="225" cy="80" r="2.5"/>
+          <rect class="label-hit" x="298" y="94" width="80" height="18"/>
+          <text class="label-text" x="302" y="108">眼睛 <tspan class="label-py">yǎnjīng</tspan></text>
+        </g>
+        <g class="part" data-part="bizi">
+          <line class="leader" x1="212" y1="90" x2="300" y2="128"/>
+          <circle class="label-dot" cx="212" cy="90" r="2.5"/>
+          <rect class="label-hit" x="298" y="118" width="72" height="18"/>
+          <text class="label-text" x="302" y="132">鼻子 <tspan class="label-py">bízi</tspan></text>
+        </g>
+        <g class="part" data-part="zui">
+          <line class="leader" x1="216" y1="106" x2="300" y2="152"/>
+          <circle class="label-dot" cx="216" cy="106" r="2.5"/>
+          <rect class="label-hit" x="298" y="142" width="60" height="18"/>
+          <text class="label-text" x="302" y="156">嘴 <tspan class="label-py">zuǐ</tspan></text>
+        </g>
+        <g class="part" data-part="yachi">
+          <line class="leader" x1="210" y1="107" x2="300" y2="176"/>
+          <circle class="label-dot" cx="210" cy="107" r="2.5"/>
+          <rect class="label-hit" x="298" y="166" width="72" height="18"/>
+          <text class="label-text" x="302" y="180">牙齿 <tspan class="label-py">yáchǐ</tspan></text>
+        </g>
+        <g class="part" data-part="jianbang">
+          <line class="leader" x1="252" y1="163" x2="300" y2="200"/>
+          <circle class="label-dot" cx="252" cy="163" r="2.5"/>
+          <rect class="label-hit" x="298" y="190" width="90" height="18"/>
+          <text class="label-text" x="302" y="204">肩膀 <tspan class="label-py">jiānbǎng</tspan></text>
+        </g>
+        <g class="part" data-part="gebo">
+          <line class="leader" x1="285" y1="240" x2="300" y2="228"/>
+          <circle class="label-dot" cx="285" cy="240" r="2.5"/>
+          <rect class="label-hit" x="298" y="218" width="70" height="18"/>
+          <text class="label-text" x="302" y="232">胳膊 <tspan class="label-py">gēbo</tspan></text>
+        </g>
+        <g class="part" data-part="shou">
+          <line class="leader" x1="280" y1="304" x2="300" y2="256"/>
+          <circle class="label-dot" cx="280" cy="304" r="2.5"/>
+          <rect class="label-hit" x="298" y="246" width="60" height="18"/>
+          <text class="label-text" x="302" y="260">手 <tspan class="label-py">shǒu</tspan></text>
+        </g>
+
+        <!-- left column -->
+        <g class="part" data-part="toufa">
+          <line class="leader" x1="164" y1="40" x2="118" y2="26"/>
+          <circle class="label-dot" cx="164" cy="40" r="2.5"/>
+          <rect class="label-hit" x="30" y="16" width="88" height="18"/>
+          <text class="label-text" x="115" y="30" text-anchor="end">头发 <tspan class="label-py">tóufa</tspan></text>
+        </g>
+        <g class="part" data-part="lian">
+          <line class="leader" x1="182" y1="100" x2="118" y2="60"/>
+          <circle class="label-dot" cx="182" cy="100" r="2.5"/>
+          <rect class="label-hit" x="30" y="50" width="88" height="18"/>
+          <text class="label-text" x="115" y="64" text-anchor="end">脸 <tspan class="label-py">liǎn</tspan></text>
+        </g>
+        <g class="part" data-part="bozi">
+          <line class="leader" x1="199" y1="133" x2="118" y2="90"/>
+          <circle class="label-dot" cx="199" cy="133" r="2.5"/>
+          <rect class="label-hit" x="30" y="80" width="88" height="18"/>
+          <text class="label-text" x="115" y="94" text-anchor="end">脖子 <tspan class="label-py">bózi</tspan></text>
+        </g>
+        <g class="part" data-part="duzi">
+          <line class="leader" x1="178" y1="270" x2="118" y2="240"/>
+          <circle class="label-dot" cx="178" cy="270" r="2.5"/>
+          <rect class="label-hit" x="30" y="230" width="88" height="18"/>
+          <text class="label-text" x="115" y="244" text-anchor="end">肚子 <tspan class="label-py">dùzi</tspan></text>
+        </g>
+        <g class="part" data-part="tui">
+          <line class="leader" x1="180" y1="420" x2="118" y2="400"/>
+          <circle class="label-dot" cx="180" cy="420" r="2.5"/>
+          <rect class="label-hit" x="30" y="390" width="88" height="18"/>
+          <text class="label-text" x="115" y="404" text-anchor="end">腿 <tspan class="label-py">tuǐ</tspan></text>
+        </g>
+        <g class="part" data-part="jiao">
+          <line class="leader" x1="182" y1="522" x2="118" y2="490"/>
+          <circle class="label-dot" cx="182" cy="522" r="2.5"/>
+          <rect class="label-hit" x="30" y="480" width="88" height="18"/>
+          <text class="label-text" x="115" y="494" text-anchor="end">脚 <tspan class="label-py">jiǎo</tspan></text>
+        </g>
+      </svg>
+      <div class="hint">👆 짧게 누르면 발음 · <b>꾹 누르면 예문</b></div>
+    </div>
+
+    <div>
+      <div class="info-card" id="infoCard">
+        <div class="info-empty">왼쪽 그림에서 한자 라벨을 눌러보세요 👈</div>
+      </div>
+
+      <div class="sentence-panel" id="sentencePanel">
+        <div class="sentence-panel-label"><span class="dot"></span>누르고 있는 동안 예문이 보여요</div>
+        <div id="sentencePanelBody"></div>
+      </div>
+
+      <div class="progress">
+        <span id="progressText">0 / 15 단어 확인함</span>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="vocab-grid" id="vocabGrid"></div>
+
+  <div class="section-title" style="margin-top:38px;"><span class="num">2</span>몸과 관련된 행동·건강 표현 모아보기</div>
+  <div class="section-desc">그림에서 꾹 눌러 나온 문장들을 여기서 전부 다시 볼 수 있어요.</div>
+  <div class="sentence-list" id="sentenceList"></div>
+
+</main>
+
+<footer>
+  🔊 발음 버튼은 iPad에서는 Chrome 브라우저로 이 파일을 열어야 정상 작동해요.<br>
+  Downloads 메뉴 → 파일 길게 누르기 → “Open” 순서로 열어주세요.
+</footer>
+
+<script>
+/* ---------------- vocab data ---------------- */
+const bodyParts = [
+  {id:"tou",      cn:"头",   py:"tóu",      kr:"머리"},
+  {id:"toufa",    cn:"头发", py:"tóufa",    kr:"머리카락"},
+  {id:"lian",     cn:"脸",   py:"liǎn",     kr:"얼굴"},
+  {id:"yanjing",  cn:"眼睛", py:"yǎnjīng",  kr:"눈"},
+  {id:"bizi",     cn:"鼻子", py:"bízi",     kr:"코"},
+  {id:"zui",      cn:"嘴",   py:"zuǐ",      kr:"입"},
+  {id:"yachi",    cn:"牙齿", py:"yáchǐ",    kr:"이, 치아"},
+  {id:"erduo",    cn:"耳朵", py:"ěrduo",    kr:"귀"},
+  {id:"bozi",     cn:"脖子", py:"bózi",     kr:"목"},
+  {id:"jianbang", cn:"肩膀", py:"jiānbǎng", kr:"어깨"},
+  {id:"gebo",     cn:"胳膊", py:"gēbo",     kr:"팔"},
+  {id:"shou",     cn:"手",   py:"shǒu",     kr:"손"},
+  {id:"duzi",     cn:"肚子", py:"dùzi",     kr:"배"},
+  {id:"tui",      cn:"腿",   py:"tuǐ",      kr:"다리"},
+  {id:"jiao",     cn:"脚",   py:"jiǎo",     kr:"발"},
+];
+
+/* sentences, each tagged with the body part it belongs to */
+const sentences = [
+  {part:"tou",      tag:"건강", cn:"我头疼。", py:"Wǒ tóu téng.", kr:"저는 머리가 아파요."},
+  {part:"tou",      tag:"건강", cn:"我发烧了。", py:"Wǒ fāshāo le.", kr:"저는 열이 나요."},
+  {part:"bizi",     tag:"건강", cn:"我感冒了。", py:"Wǒ gǎnmào le.", kr:"저는 감기에 걸렸어요."},
+  {part:"duzi",     tag:"건강", cn:"我肚子疼。", py:"Wǒ dùzi téng.", kr:"저는 배가 아파요."},
+  {part:"duzi",     tag:"건강", cn:"多喝水，对身体好。", py:"Duō hē shuǐ, duì shēntǐ hǎo.", kr:"물을 많이 마시면 몸에 좋아요."},
+  {part:"shou",     tag:"행동", cn:"请洗手。", py:"Qǐng xǐ shǒu.", kr:"손을 씻으세요."},
+  {part:"yachi",    tag:"행동", cn:"我每天刷牙。", py:"Wǒ měitiān shuā yá.", kr:"저는 매일 이를 닦아요."},
+  {part:"yanjing",  tag:"행동", cn:"请闭上眼睛。", py:"Qǐng bìshàng yǎnjīng.", kr:"눈을 감으세요."},
+  {part:"yanjing",  tag:"건강", cn:"我很累，眼睛很疼。", py:"Wǒ hěn lèi, yǎnjīng hěn téng.", kr:"저는 피곤하고, 눈이 아파요."},
+  {part:"zui",      tag:"행동", cn:"请张开嘴。", py:"Qǐng zhāngkāi zuǐ.", kr:"입을 벌리세요."},
+  {part:"jiao",     tag:"건강", cn:"我的脚很疼。", py:"Wǒ de jiǎo hěn téng.", kr:"제 발이 많이 아파요."},
+  {part:"erduo",    tag:"건강", cn:"医生看了看我的耳朵。", py:"Yīshēng kàn le kàn wǒ de ěrduo.", kr:"의사 선생님이 제 귀를 봐주셨어요."},
+  {part:"bozi",     tag:"건강", cn:"我的脖子很疼。", py:"Wǒ de bózi hěn téng.", kr:"제 목이 아파요."},
+  {part:"gebo",     tag:"건강", cn:"我的胳膊很疼。", py:"Wǒ de gēbo hěn téng.", kr:"제 팔이 아파요."},
+  {part:"tui",      tag:"건강", cn:"我的腿很累。", py:"Wǒ de tuǐ hěn lèi.", kr:"제 다리가 피곤해요."},
+];
+
+/* ---------------- TTS setup (기존 시리즈 패턴) ---------------- */
+let voices = [];
+let chosenVoice = null;
+const preferredNames = ["Tingting","Mei-Jia","Sinji","Sin-Ji","Enhanced","Ting-Ting"];
+
+function loadVoices(){
+  voices = speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().startsWith("zh"));
+  const select = document.getElementById("voiceSelect");
+  select.innerHTML = "";
+  if(voices.length === 0){
+    select.innerHTML = "<option>중국어 음성 없음</option>";
+    return;
+  }
+  voices.forEach((v,i)=>{
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = v.name;
+    select.appendChild(opt);
+  });
+  let bestIdx = voices.findIndex(v => preferredNames.some(p => v.name.includes(p)));
+  if(bestIdx === -1) bestIdx = 0;
+  select.value = bestIdx;
+  chosenVoice = voices[bestIdx];
+  select.addEventListener("change", ()=>{ chosenVoice = voices[select.value]; });
+}
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
+function splitClauses(text){
+  const raw = text.split(/([，。！？])/).filter(Boolean);
+  let clauses = [];
+  let buf = "";
+  for(let i=0;i<raw.length;i++){
+    buf += raw[i];
+    if(/[，。！？]/.test(raw[i])){
+      clauses.push(buf);
+      buf = "";
+    }
+  }
+  if(buf) clauses.push(buf);
+  const merged = [];
+  clauses.forEach(c=>{
+    const bare = c.replace(/[，。！？]/g,"");
+    if(merged.length && bare.length <= 4){
+      merged[merged.length-1] += c;
+    } else {
+      merged.push(c);
+    }
+  });
+  return merged.length ? merged : [text];
+}
+
+function speak(text, rate=0.88, pitch=1.0){
+  if(!('speechSynthesis' in window)){
+    alert("이 브라우저는 음성 기능을 지원하지 않아요.");
+    return;
+  }
+  speechSynthesis.cancel();
+  const clauses = splitClauses(text);
+  let i = 0;
+  function next(){
+    if(i >= clauses.length) return;
+    const u = new SpeechSynthesisUtterance(clauses[i]);
+    u.lang = "zh-CN";
+    if(chosenVoice) u.voice = chosenVoice;
+    u.rate = rate;
+    u.pitch = pitch;
+    u.onend = ()=>{ i++; setTimeout(next, i < clauses.length ? 130 : 0); };
+    speechSynthesis.speak(u);
+  }
+  next();
+}
+
+/* ---------------- state ---------------- */
+const seen = new Set();
+const infoCard = document.getElementById("infoCard");
+const progressText = document.getElementById("progressText");
+const progressFill = document.getElementById("progressFill");
+const sentencePanel = document.getElementById("sentencePanel");
+const sentencePanelBody = document.getElementById("sentencePanelBody");
+
+function updateProgress(){
+  progressText.textContent = `${seen.size} / ${bodyParts.length} 단어 확인함`;
+  progressFill.style.width = (seen.size / bodyParts.length * 100) + "%";
+}
+
+function markActive(id){
+  document.querySelectorAll(".part").forEach(p=>{
+    p.classList.toggle("active", p.dataset.part === id);
+  });
+}
+
+/* short tap: word card + speak */
+function showWordInfo(id, doSpeak){
+  const item = bodyParts.find(b => b.id === id);
+  if(!item) return;
+  seen.add(id);
+  updateProgress();
+  updateVocabGrid();
+  markActive(id);
+
+  infoCard.innerHTML = `
+    <div class="info-top">
+      <button class="info-speak" aria-label="발음 듣기">🔊</button>
+      <div>
+        <div class="info-cn cn">${item.cn}</div>
+      </div>
+    </div>
+    <div class="info-pinyin">${item.py}</div>
+    <div class="info-kr">${item.kr}</div>
+  `;
+  infoCard.querySelector(".info-speak").addEventListener("click", ()=> speak(item.cn));
+  if(doSpeak) speak(item.cn);
+}
+
+/* long-press: sentence panel, auto-speaks the first sentence */
+function showSentences(id){
+  const list = sentences.filter(s => s.part === id);
+  sentencePanel.classList.add("show");
+  if(list.length === 0){
+    sentencePanelBody.innerHTML = `<div class="sp-empty">이 부위와 관련된 예문은 준비 중이에요 🙂</div>`;
+    return;
+  }
+  sentencePanelBody.innerHTML = list.map(s => `
+    <div class="sp-item">
+      <div class="cn">${s.cn}</div>
+      <div class="py">${s.py}</div>
+      <div class="kr">${s.kr}</div>
+    </div>
+  `).join("");
+  speak(list[0].cn);
+}
+
+function hideSentences(){
+  sentencePanel.classList.remove("show");
+}
+
+/* ---------------- press / hold interaction ---------------- */
+const HOLD_MS = 320;
+let holdTimer = null;
+let isHolding = false;
+let activePart = null;
+
+function bindPressHold(el){
+  const id = el.dataset.part;
+
+  const start = (e)=>{
+    e.preventDefault();
+    activePart = id;
+    isHolding = false;
+    el.classList.add("holding");
+    holdTimer = setTimeout(()=>{
+      isHolding = true;
+      showWordInfo(id, false);
+      showSentences(id);
+    }, HOLD_MS);
+  };
+
+  const end = (e)=>{
+    if(activePart !== id) return;
+    clearTimeout(holdTimer);
+    el.classList.remove("holding");
+    if(isHolding){
+      hideSentences();
+    } else {
+      showWordInfo(id, true);
+    }
+    isHolding = false;
+    activePart = null;
+  };
+
+  const cancel = ()=>{
+    clearTimeout(holdTimer);
+    el.classList.remove("holding");
+    if(isHolding) hideSentences();
+    isHolding = false;
+    activePart = null;
+  };
+
+  el.addEventListener("pointerdown", start);
+  el.addEventListener("pointerup", end);
+  el.addEventListener("pointerleave", cancel);
+  el.addEventListener("pointercancel", cancel);
+  el.addEventListener("contextmenu", e => e.preventDefault());
+}
+
+document.querySelectorAll(".part").forEach(bindPressHold);
+
+/* ---------------- vocab grid ---------------- */
+const vocabGrid = document.getElementById("vocabGrid");
+function updateVocabGrid(){
+  vocabGrid.innerHTML = "";
+  bodyParts.forEach(item=>{
+    const chip = document.createElement("div");
+    chip.className = "vocab-chip" + (seen.has(item.id) ? " seen" : "");
+    chip.innerHTML = `
+      <div class="cn">${item.cn}</div>
+      <div class="py">${item.py}</div>
+      <div class="kr">${item.kr}</div>
+    `;
+    chip.addEventListener("click", ()=> showWordInfo(item.id, true));
+    vocabGrid.appendChild(chip);
+  });
+}
+updateVocabGrid();
+
+/* ---------------- sentence list (full section) ---------------- */
+const sentenceList = document.getElementById("sentenceList");
+sentences.forEach(s=>{
+  const card = document.createElement("div");
+  card.className = "sentence-card";
+  card.innerHTML = `
+    <button class="sentence-speak">🔊</button>
+    <div class="sentence-body">
+      <span class="tag">${s.tag}</span>
+      <div class="cn">${s.cn}</div>
+      <div class="py">${s.py}</div>
+      <div class="kr">${s.kr}</div>
+    </div>
+  `;
+  card.querySelector(".sentence-speak").addEventListener("click", ()=> speak(s.cn));
+  sentenceList.appendChild(card);
+});
+
+/* ---------------- listen all (body parts) ---------------- */
+document.getElementById("listenAllBtn").addEventListener("click", ()=>{
+  speechSynthesis.cancel();
+  let i = 0;
+  function playNext(){
+    if(i >= bodyParts.length) return;
+    const item = bodyParts[i];
+    showWordInfo(item.id, false);
+    const u = new SpeechSynthesisUtterance(item.cn);
+    u.lang = "zh-CN";
+    if(chosenVoice) u.voice = chosenVoice;
+    u.rate = 0.88;
+    u.onend = ()=>{ i++; setTimeout(playNext, 260); };
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  }
+  playNext();
+});
+</script>
+</body>
+</html>
