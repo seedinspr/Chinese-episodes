@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track A · 1화 · 你好，认识你很高兴</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+SC:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --mint:#CDEAE0; --mint-deep:#9FD4C4; --cream:#FFFBF0; --wood:#C9A574;
+    --coral:#F0765A; --coral-dark:#d85f45; --ink:#2C3B2E; --muted:#8a8375;
+    --bubbleA:#FFFFFF; --bubbleB:#EAF6F1;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; font-family:'Noto Sans KR',sans-serif; color:var(--ink);
+    background:linear-gradient(180deg,var(--mint) 0%, var(--mint-deep) 30%, var(--cream) 30%); padding-bottom:50px; }
+
+  .sky-deco{ position:relative; height:150px; overflow:hidden; background:linear-gradient(180deg,#BEE3F0,var(--mint)); }
+  .window{ position:absolute; left:50%; transform:translateX(-50%); top:14px; width:150px; height:110px;
+    background:rgba(255,255,255,.35); border:5px solid #fff; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,.08); }
+  .window::before{ content:''; position:absolute; left:50%; top:0; bottom:0; width:5px; background:#fff; }
+  .window::after{ content:''; position:absolute; top:50%; left:0; right:0; height:5px; background:#fff; }
+  .board{ position:absolute; left:8%; bottom:6px; width:120px; height:70px; background:#3f6b52; border:6px solid var(--wood); border-radius:4px; }
+  .board-txt{ position:absolute; left:8%; bottom:26px; width:120px; text-align:center; color:#fff; font-family:'Noto Sans SC',sans-serif; font-size:1.4rem; font-weight:700; }
+  .plant{ position:absolute; right:6%; bottom:0; width:40px; height:60px; }
+  .plant .pot{ position:absolute; bottom:0; left:8px; width:24px; height:20px; background:var(--wood); border-radius:0 0 6px 6px; }
+  .plant .leaf{ position:absolute; bottom:16px; width:10px; height:34px; background:#6fae6a; border-radius:50% 50% 50% 0; }
+  .plant .l1{ left:6px; transform:rotate(-18deg); }
+  .plant .l2{ left:16px; transform:rotate(10deg); }
+  .plant .l3{ left:11px; height:40px; }
+
+  header{ text-align:center; padding:20px 16px 16px; }
+  .ep-tag{ display:inline-block; margin-bottom:6px; padding:4px 14px; border-radius:999px;
+    background:var(--coral); color:#fff; font-size:.78rem; font-weight:700; }
+  h1{ font-family:'Fredoka',sans-serif; font-size:1.8rem; margin:4px 0; }
+  .subtitle{ font-size:.9rem; color:var(--muted); margin-bottom:14px; }
+  #listenAllBtn{ background:var(--coral); color:#fff; border:none; padding:9px 20px; border-radius:999px;
+    font-family:'Fredoka',sans-serif; font-weight:600; font-size:.95rem; cursor:pointer; box-shadow:0 4px 10px rgba(240,118,90,.3); }
+  .voice-note{ margin-top:8px; font-size:.75rem; color:var(--muted); }
+  .voice-picker{ margin-top:10px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:.8rem; }
+  .voice-picker select{ font-family:'Noto Sans KR',sans-serif; font-size:.8rem; padding:5px 8px; border-radius:8px;
+    border:1.5px solid var(--coral); background:#fff; max-width:180px; }
+
+  .stage{ max-width:640px; margin:0 auto; padding:0 16px; }
+  .narration{ text-align:center; font-size:.85rem; color:#4a7a63; background:#fff; border:1px dashed var(--mint-deep);
+    border-radius:12px; padding:10px 16px; margin:16px 0; }
+  .narration .cn-note{ font-family:'Noto Sans SC',sans-serif; font-weight:600; color:var(--ink); display:block; margin-bottom:2px; }
+  .narration .kr-note{ font-style:italic; }
+
+  .panel{ display:flex; gap:12px; align-items:flex-end; margin:16px 0; }
+  .panel.right{ flex-direction:row-reverse; }
+  .avatar-col{ display:flex; flex-direction:column; align-items:center; width:66px; flex-shrink:0; }
+  .avatar{ width:64px; height:64px; border-radius:50%; background:#fff; box-shadow:0 3px 8px rgba(0,0,0,.15);
+    display:flex; align-items:center; justify-content:center; }
+  .name-tag{ font-size:.72rem; margin-top:4px; font-weight:700; color:var(--ink); }
+  .bubble{ background:var(--bubbleA); border-radius:18px; padding:12px 16px; box-shadow:0 3px 10px rgba(0,0,0,.08);
+    max-width:calc(100% - 90px); }
+  .panel.right .bubble{ background:var(--bubbleB); }
+  .cn-line{ display:flex; align-items:center; gap:8px; cursor:pointer; }
+  .speak-btn{ background:var(--coral); border:none; color:#fff; width:30px; height:30px; border-radius:50%;
+    font-size:.9rem; cursor:pointer; flex-shrink:0; }
+  .cn{ font-family:'Noto Sans SC',sans-serif; font-weight:700; font-size:1.13rem; margin:0; color:var(--ink); }
+  .pinyin{ margin:5px 0 2px 38px; color:#5f8f78; font-size:.85rem; font-style:italic; }
+  .kr{ margin:2px 0 0 38px; font-size:.88rem; }
+
+  .scene-row{ display:flex; align-items:center; justify-content:center; gap:10px; margin:14px 0; }
+  .scene-icon{ font-size:1.3rem; }
+  .sfx-btn{ background:#fff; border:2px solid var(--coral); color:var(--coral-dark); border-radius:999px;
+    padding:7px 16px; font-size:.85rem; font-weight:600; cursor:pointer; }
+
+  footer{ max-width:640px; margin:26px auto 0; padding:0 16px; }
+  footer h2{ font-family:'Fredoka',sans-serif; font-size:1.15rem; border-bottom:3px solid var(--coral); display:inline-block; padding-bottom:2px; }
+  .vocab-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin:14px 0 8px; }
+  .vocab-item{ background:#fff; border-radius:12px; padding:10px 12px; box-shadow:0 2px 6px rgba(0,0,0,.07); cursor:pointer; }
+  .vocab-item .v-cn{ font-family:'Noto Sans SC',sans-serif; font-weight:700; font-size:1.05rem; color:var(--ink); }
+  .vocab-item .v-py{ font-size:.78rem; color:#5f8f78; font-style:italic; }
+  .vocab-item .v-kr{ font-size:.82rem; margin-top:2px; }
+  .repeat-note, .review-note{ font-size:.82rem; color:var(--muted); margin:10px 0 4px; }
+  .repeat-note b{ color:var(--coral-dark); }
+  .first-note{ font-size:.82rem; color:var(--muted); font-style:italic; margin:10px 0 4px; }
+</style>
+</head>
+<body>
+
+<div class="sky-deco">
+  <div class="window"></div>
+  <div class="board"></div>
+  <div class="board-txt">你好</div>
+  <div class="plant"><div class="pot"></div><div class="leaf l1"></div><div class="leaf l2"></div><div class="leaf l3"></div></div>
+</div>
+
+<header>
+  <span class="ep-tag">Track A · 1화 · 자기소개·인사하기</span>
+  <h1>你好，认识你很高兴</h1>
+  <div class="subtitle">중국어 학원 첫날 · 다은과 준서의 대화</div>
+  <button id="listenAllBtn">▶ 전체 대화 듣기</button>
+  <div class="voice-note">🔊 버튼이나 중국어 문장을 누르면 발음을 들을 수 있어요</div>
+  <div class="voice-picker">
+    <label for="voiceSelect">🎙 음성 선택</label>
+    <select id="voiceSelect"><option>목소리 불러오는 중…</option></select>
+  </div>
+</header>
+
+<div class="stage">
+
+  <div class="narration">
+    <span class="cn-note">中文学院的第一天，教室里坐着两个新同学。</span>
+    <span class="kr-note">(중국어 학원 첫날, 교실에 새로운 두 학생이 앉아 있어요.)</span>
+  </div>
+
+  <div class="panel right">
+    <div class="avatar-col"><div class="avatar" data-char="boy" data-emotion="shy"></div><div class="name-tag">준서</div></div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">你好，我叫俊瑞。</p></div>
+      <p class="pinyin">Nǐ hǎo, wǒ jiào Jùnruì.</p>
+      <p class="kr">안녕, 나는 준서야.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="avatar-col"><div class="avatar" data-char="girl" data-emotion="shy"></div><div class="name-tag">다은</div></div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">你好，我叫达妍，很高兴认识你。</p></div>
+      <p class="pinyin">Nǐ hǎo, wǒ jiào Dá Yán, hěn gāoxìng rènshi nǐ.</p>
+      <p class="kr">안녕, 나는 다은이야, 만나서 반가워.</p>
+    </div>
+  </div>
+
+  <div class="panel right">
+    <div class="avatar-col"><div class="avatar" data-char="boy" data-emotion="normal"></div><div class="name-tag">준서</div></div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">你是韩国人吗？</p></div>
+      <p class="pinyin">Nǐ shì Hánguó rén ma?</p>
+      <p class="kr">너 한국 사람이야?</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="avatar-col"><div class="avatar" data-char="girl" data-emotion="happy"></div><div class="name-tag">다은</div></div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">对，我是韩国人。你也是吗？</p></div>
+      <p class="pinyin">Duì, wǒ shì Hánguó rén. Nǐ yě shì ma?</p>
+      <p class="kr">응, 나는 한국 사람이야. 너도야?</p>
+    </div>
+  </div>
+
+  <div class="panel right">
+    <div class="avatar-col"><div class="avatar" data-char="boy" data-emotion="happy"></div><div class="name-tag">준서</div></div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">对，我也是韩国人，我们是同学。</p></div>
+      <p class="pinyin">Duì, wǒ yě shì Hánguó rén, wǒmen shì tóngxué.</p>
+      <p class="kr">응, 나도 한국 사람이야, 우리 반 친구네.</p>
+    </div>
+  </div>
+
+  <div class="scene-row">
+    <span class="scene-icon">📖</span>
+    <button class="sfx-btn" id="pageSfx">🔉 책 넘기는 소리</button>
+  </div>
+  <div class="narration">
+    <span class="cn-note">老师进来了，请大家自我介绍。</span>
+    <span class="kr-note">(선생님이 들어오셔서 다 같이 자기소개를 하자고 하셨어요.)</span>
+  </div>
+
+  <div class="panel">
+    <div class="avatar-col"><div class="avatar" data-char="girl" data-emotion="normal"></div><div class="name-tag">다은</div></div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">大家好，我叫达妍，今年十五岁。</p></div>
+      <p class="pinyin">Dàjiā hǎo, wǒ jiào Dá Yán, jīnnián shíwǔ suì.</p>
+      <p class="kr">안녕하세요, 저는 다은이고, 올해 열다섯 살이에요.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="avatar-col"><div class="avatar" data-char="girl" data-emotion="happy"></div><div class="name-tag">다은</div></div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">我喜欢看书，也喜欢音乐。</p></div>
+      <p class="pinyin">Wǒ xǐhuan kàn shū, yě xǐhuan yīnyuè.</p>
+      <p class="kr">저는 책 읽는 걸 좋아하고, 음악도 좋아해요.</p>
+    </div>
+  </div>
+
+  <div class="panel right">
+    <div class="avatar-col"><div class="avatar" data-char="boy" data-emotion="shy"></div><div class="name-tag">준서</div></div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">大家好，我叫俊瑞，今年十六岁。</p></div>
+      <p class="pinyin">Dàjiā hǎo, wǒ jiào Jùnruì, jīnnián shíliù suì.</p>
+      <p class="kr">안녕하세요, 저는 준서이고, 올해 열여섯 살이에요.</p>
+    </div>
+  </div>
+
+  <div class="panel right">
+    <div class="avatar-col"><div class="avatar" data-char="boy" data-emotion="confident"></div><div class="name-tag">준서</div></div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">我喜欢打篮球，请多多关照。</p></div>
+      <p class="pinyin">Wǒ xǐhuan dǎ lánqiú, qǐng duō duō guānzhào.</p>
+      <p class="kr">저는 농구하는 걸 좋아해요, 잘 부탁드려요.</p>
+    </div>
+  </div>
+
+  <div class="scene-row">
+    <span class="scene-icon">👏</span>
+    <button class="sfx-btn" id="clapSfx">🔉 박수 소리</button>
+  </div>
+  <div class="narration">
+    <span class="cn-note">下课以后，两个人一起走出教室。</span>
+    <span class="kr-note">(수업이 끝난 뒤, 두 사람이 함께 교실을 나섰어요.)</span>
+  </div>
+
+  <div class="panel">
+    <div class="avatar-col"><div class="avatar" data-char="girl" data-emotion="warm"></div><div class="name-tag">다은</div></div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">你的中文说得很好！</p></div>
+      <p class="pinyin">Nǐ de Zhōngwén shuō de hěn hǎo!</p>
+      <p class="kr">너 중국어 되게 잘한다!</p>
+    </div>
+  </div>
+
+  <div class="panel right">
+    <div class="avatar-col"><div class="avatar" data-char="boy" data-emotion="shy"></div><div class="name-tag">준서</div></div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">谢谢，你也说得很好。</p></div>
+      <p class="pinyin">Xièxiè, nǐ yě shuō de hěn hǎo.</p>
+      <p class="kr">고마워, 너도 잘하는데.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="avatar-col"><div class="avatar" data-char="girl" data-emotion="happy"></div><div class="name-tag">다은</div></div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">我们可以一起学习中文吗？</p></div>
+      <p class="pinyin">Wǒmen kěyǐ yìqǐ xué Zhōngwén ma?</p>
+      <p class="kr">우리 같이 중국어 공부할까?</p>
+    </div>
+  </div>
+
+  <div class="panel right">
+    <div class="avatar-col"><div class="avatar" data-char="boy" data-emotion="confident"></div><div class="name-tag">준서</div></div>
+    <div class="bubble">
+      <div class="cn-line"><button class="speak-btn">🔊</button><p class="cn">当然可以！我们做朋友吧。</p></div>
+      <p class="pinyin">Dāngrán kěyǐ! Wǒmen zuò péngyou ba.</p>
+      <p class="kr">당연하지! 우리 친구하자.</p>
+    </div>
+  </div>
+
+  <div class="narration">
+    <span class="cn-note">从今天开始，达妍和俊瑞成了好朋友。</span>
+    <span class="kr-note">(오늘부터 다은과 준서는 좋은 친구가 되었어요.)</span>
+  </div>
+
+</div>
+
+<footer>
+  <h2>오늘의 단어 (새 단어)</h2>
+  <div class="vocab-grid" id="newVocab"></div>
+  <div class="repeat-note">💡 <b>你好</b>·<b>叫</b>(4회) · <b>韩国人</b>(3회) · <b>喜欢</b>·<b>岁</b>·<b>中文</b>(2회) — 이 단어들은 대화 속에서 여러 번 등장해요. 나머지 단어는 이번 편에 1번 등장하지만, 상황과 함께 기억하면 오래 남아요.</div>
+  <div class="first-note">📌 Track A 1화라 아직 복습할 이전 회차가 없어요. 다음 화부터 여기 있는 단어들이 복습 단어로 다시 등장할 거예요.</div>
+</footer>
+
+<script>
+  /* ---------------- 아바타 SVG ---------------- */
+  function girlFace(emotion){
+    const eyes = {
+      normal:'<circle cx="24" cy="30" r="4" fill="#2b2b2b"/><circle cx="40" cy="30" r="4" fill="#2b2b2b"/>',
+      warm:'<path d="M20 30 Q24 26 28 30" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M36 30 Q40 26 44 30" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+      happy:'<path d="M20 29 Q24 25 28 29" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M36 29 Q40 25 44 29" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+      shy:'<path d="M20 30 h8" stroke="#2b2b2b" stroke-width="2.3" stroke-linecap="round"/><path d="M36 30 h8" stroke="#2b2b2b" stroke-width="2.3" stroke-linecap="round"/>'
+    };
+    const mouth = {
+      normal:'<path d="M26 40 Q32 44 38 40" stroke="#c9584a" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+      warm:'<path d="M25 39 Q32 46 39 39" stroke="#c9584a" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+      happy:'<path d="M24 38 Q32 47 40 38" stroke="#c9584a" stroke-width="2.8" fill="none" stroke-linecap="round"/>',
+      shy:'<path d="M28 40 Q32 42 36 40" stroke="#c9584a" stroke-width="2.2" fill="none" stroke-linecap="round"/>'
+    };
+    const blush = emotion==='shy' ? 4.2 : 3.2;
+    return `
+    <svg viewBox="0 0 64 64" width="52" height="52">
+      <circle cx="32" cy="34" r="22" fill="#ffe3c4"/>
+      <path d="M10 30 Q10 8 32 8 Q54 8 54 30 Q54 18 32 16 Q10 18 10 30 Z" fill="#6b4a35"/>
+      <path d="M10 28 Q8 42 14 46 Q12 34 16 26 Z" fill="#6b4a35"/>
+      <path d="M54 28 Q56 42 50 46 Q52 34 48 26 Z" fill="#6b4a35"/>
+      <circle cx="18" cy="38" r="${blush}" fill="#f6a9a0" opacity=".7"/>
+      <circle cx="46" cy="38" r="${blush}" fill="#f6a9a0" opacity=".7"/>
+      ${eyes[emotion]||eyes.normal}
+      ${mouth[emotion]||mouth.normal}
+    </svg>`;
+  }
+
+  function boyFace(emotion){
+    const eyes = {
+      normal:'<circle cx="24" cy="30" r="4" fill="#2b2b2b"/><circle cx="40" cy="30" r="4" fill="#2b2b2b"/>',
+      happy:'<path d="M20 29 Q24 25 28 29" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M36 29 Q40 25 44 29" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+      shy:'<path d="M20 30 h8" stroke="#2b2b2b" stroke-width="2.3" stroke-linecap="round"/><path d="M36 30 h8" stroke="#2b2b2b" stroke-width="2.3" stroke-linecap="round"/>',
+      confident:'<path d="M20 29 L28 29" stroke="#2b2b2b" stroke-width="2.6" stroke-linecap="round"/><path d="M36 29 Q41 24 45 28" stroke="#2b2b2b" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="24" cy="30" r="3.4" fill="#2b2b2b"/>'
+    };
+    const mouth = {
+      normal:'<path d="M26 40 Q32 43 38 40" stroke="#8a5a3a" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+      happy:'<path d="M24 38 Q32 46 40 38" stroke="#8a5a3a" stroke-width="2.8" fill="none" stroke-linecap="round"/>',
+      shy:'<path d="M28 40 Q32 42 36 40" stroke="#8a5a3a" stroke-width="2.2" fill="none" stroke-linecap="round"/>',
+      confident:'<path d="M25 39 Q32 45 39 38" stroke="#8a5a3a" stroke-width="2.6" fill="none" stroke-linecap="round"/>'
+    };
+    const blush = emotion==='shy' ? 3.6 : 2.4;
+    return `
+    <svg viewBox="0 0 64 64" width="52" height="52">
+      <circle cx="32" cy="34" r="22" fill="#ffdcb8"/>
+      <path d="M11 27 L15 12 L20 24 L25 10 L30 23 L34 9 L38 23 L43 10 L48 24 L53 12 L57 27 Q57 15 32 15 Q7 15 11 27 Z" fill="#2c2420"/>
+      <circle cx="18" cy="38" r="${blush}" fill="#f0a08c" opacity=".55"/>
+      <circle cx="46" cy="38" r="${blush}" fill="#f0a08c" opacity=".55"/>
+      ${eyes[emotion]||eyes.normal}
+      ${mouth[emotion]||mouth.normal}
+    </svg>`;
+  }
+
+  document.querySelectorAll('.avatar').forEach(el=>{
+    const char = el.dataset.char, emo = el.dataset.emotion;
+    el.innerHTML = char==='girl' ? girlFace(emo) : boyFace(emo);
+  });
+
+  /* ---------------- TTS ---------------- */
+  let zhVoices = [], chosenVoice = null;
+  const voiceSelect = document.getElementById('voiceSelect');
+
+  function pickBestVoice(pool){
+    const preferred = /Tingting|Ting-Ting|Mei-?Jia|Sinji|Sin-?ji|Google 普通话|普通话|Yaoyao|Xiaoxiao|Enhanced|Premium/i;
+    return pool.find(v => preferred.test(v.name)) || pool[0];
+  }
+  function loadVoices(){
+    const all = speechSynthesis.getVoices();
+    zhVoices = all.filter(v => v.lang && v.lang.toLowerCase().startsWith('zh'));
+    if(zhVoices.length === 0){ zhVoices = all; }
+    chosenVoice = pickBestVoice(zhVoices);
+    voiceSelect.innerHTML = '';
+    zhVoices.forEach(v=>{
+      const opt = document.createElement('option');
+      opt.value = v.name; opt.textContent = v.name + ' (' + v.lang + ')';
+      if(chosenVoice && v.name === chosenVoice.name) opt.selected = true;
+      voiceSelect.appendChild(opt);
+    });
+  }
+  if('speechSynthesis' in window){ loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+  voiceSelect.addEventListener('change', ()=>{ chosenVoice = zhVoices.find(v => v.name === voiceSelect.value) || chosenVoice; });
+
+  function splitClauses(text){
+    const raw = text.split(/([，,。！!？?…])/).reduce((acc, part)=>{
+      if(!part) return acc;
+      if(/[，,。！!？?…]/.test(part) && acc.length){ acc[acc.length-1] += part; }
+      else { acc.push(part); }
+      return acc;
+    }, []).map(s=>s.trim()).filter(Boolean);
+    // 너무 짧은 절(문장부호 제외 4글자 이하)은 단독 재생 시 음이 깨지는 경우가 있어 앞 절에 붙여줌
+    const merged = [];
+    raw.forEach(seg=>{
+      const bare = seg.replace(/[，,。！!？?…]/g, '');
+      if(merged.length && bare.length <= 4){
+        merged[merged.length - 1] += seg;
+      } else {
+        merged.push(seg);
+      }
+    });
+    return merged;
+  }
+  function speakClauses(text, pitch, onAllDone){
+    if(!('speechSynthesis' in window)) return;
+    const clauses = splitClauses(text);
+    let i = 0;
+    function next(){
+      if(i >= clauses.length){ if(onAllDone) onAllDone(); return; }
+      const u = new SpeechSynthesisUtterance(clauses[i]);
+      u.lang = 'zh-CN'; if(chosenVoice) u.voice = chosenVoice;
+      u.rate = 0.88; u.pitch = pitch || 1.0;
+      u.onend = ()=>{ i++; setTimeout(next, 130); };
+      speechSynthesis.speak(u);
+    }
+    next();
+  }
+  function speak(text, pitch){
+    if(!('speechSynthesis' in window)){ alert('이 브라우저는 음성 읽기를 지원하지 않아요.'); return; }
+    speechSynthesis.cancel(); speakClauses(text, pitch);
+  }
+  function pitchForChar(charKey){
+    if(charKey === 'boy') return 0.78;   // 준서 - 낮춰서 남성적으로
+    if(charKey === 'girl') return 1.05;  // 다은 - 살짝 높여서 대비
+    return 1.0;
+  }
+  document.querySelectorAll('.cn-line').forEach(line=>{
+    const text = line.querySelector('.cn').textContent;
+    const panel = line.closest('.panel');
+    const avatarEl = panel ? panel.querySelector('.avatar') : null;
+    const pitch = pitchForChar(avatarEl ? avatarEl.dataset.char : null);
+    line.addEventListener('click', ()=> speak(text, pitch));
+  });
+  document.getElementById('listenAllBtn').addEventListener('click', ()=>{
+    if(!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const lines = Array.from(document.querySelectorAll('.cn-line')).map(line=>{
+      const panel = line.closest('.panel');
+      const avatarEl = panel ? panel.querySelector('.avatar') : null;
+      return { text: line.querySelector('.cn').textContent, pitch: pitchForChar(avatarEl ? avatarEl.dataset.char : null) };
+    });
+    let i = 0;
+    function next(){ if(i >= lines.length) return; speakClauses(lines[i].text, lines[i].pitch, ()=>{ i++; setTimeout(next, 220); }); }
+    next();
+  });
+
+  /* ---------------- Web Audio SFX ---------------- */
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  var actx = null;
+  function getCtx(){ if(!AudioCtx) return null; if(!actx) actx = new AudioCtx(); return actx; }
+  function withPlayingState(fn){
+    var ctx = getCtx();
+    if(!ctx){ alert('이 브라우저는 효과음(Web Audio)을 지원하지 않아요.'); return; }
+    function run(){ try{ fn(ctx); } catch(err){ alert('효과음 오류: ' + err.message); } }
+    if(ctx.state === 'suspended'){ ctx.resume().then(run); } else { run(); }
+  }
+  function sfxPage(){
+    withPlayingState(function(ctx){
+      const dur = 0.3, bufferSize = ctx.sampleRate * dur;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for(let i=0;i<bufferSize;i++){ data[i] = (Math.random()*2-1) * (1 - i/bufferSize); }
+      const noise = ctx.createBufferSource(); noise.buffer = buffer;
+      const filter = ctx.createBiquadFilter(); filter.type = 'highpass'; filter.frequency.value = 2000;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+      noise.connect(filter).connect(gain).connect(ctx.destination);
+      noise.start(); noise.stop(ctx.currentTime + dur);
+    });
+  }
+  function sfxClap(){
+    withPlayingState(function(ctx){
+      for(let i=0;i<5;i++){
+        const t = ctx.currentTime + i*0.15 + Math.random()*0.03;
+        const bufferSize = ctx.sampleRate * 0.08;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for(let j=0;j<bufferSize;j++){ data[j] = (Math.random()*2-1); }
+        const noise = ctx.createBufferSource(); noise.buffer = buffer;
+        const filter = ctx.createBiquadFilter(); filter.type = 'bandpass'; filter.frequency.value = 1500;
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.4, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+        noise.connect(filter).connect(gain).connect(ctx.destination);
+        noise.start(t); noise.stop(t + 0.09);
+      }
+    });
+  }
+  document.getElementById('pageSfx').addEventListener('click', sfxPage);
+  document.getElementById('clapSfx').addEventListener('click', sfxClap);
+
+  /* ---------------- 단어장 ---------------- */
+  const newWords = [
+    ['你好','nǐ hǎo','안녕'],
+    ['叫','jiào','~라고 부르다'],
+    ['认识','rènshi','알다(만나서 알게 되다)'],
+    ['高兴','gāoxìng','기쁘다'],
+    ['韩国人','Hánguó rén','한국 사람'],
+    ['同学','tóngxué','반 친구, 학우'],
+    ['岁','suì','살(나이)'],
+    ['喜欢','xǐhuan','좋아하다'],
+    ['音乐','yīnyuè','음악'],
+    ['打篮球','dǎ lánqiú','농구하다'],
+    ['关照','guānzhào','돌봐주다(잘 부탁해요)'],
+    ['中文','Zhōngwén','중국어'],
+    ['一起','yìqǐ','함께'],
+    ['朋友','péngyou','친구']
+  ];
+  function renderVocab(list, containerId){
+    const box = document.getElementById(containerId);
+    list.forEach(([cn,py,kr])=>{
+      const div = document.createElement('div');
+      div.className = 'vocab-item';
+      div.innerHTML = `<div class="v-cn">${cn}</div><div class="v-py">${py}</div><div class="v-kr">${kr}</div>`;
+      div.addEventListener('click', ()=> speak(cn));
+      box.appendChild(div);
+    });
+  }
+  renderVocab(newWords, 'newVocab');
+</script>
+
+</body>
+</html>
